@@ -76,4 +76,3 @@ public class Actividad {
         this.puntajesActividad = puntajesActividad;
     }
 }
-
