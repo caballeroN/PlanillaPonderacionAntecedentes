@@ -35,14 +35,6 @@ public class ProfesorController {
 		return "index";
 	}
 
-	@GetMapping("/prueba")
-	public String metodoPrueba (ModelMap model){
-
-		List<Profesor> profe = service.getAll();
-		model.addAttribute("profesores", profe);
-		return "profesores";
-	}
-
 	@GetMapping("/{id}")
 	public ResponseEntity<APIResponse<Profesor>> getProfesorById(@PathVariable("id") Integer id){
 		return service.exists(id) ? ResponseUtil.success(service.getById(id))
