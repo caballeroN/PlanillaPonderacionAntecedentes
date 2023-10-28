@@ -3,6 +3,8 @@ package iesmb.pp3.planillaProfesores.controller;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,18 +19,20 @@ import iesmb.pp3.planillaProfesores.service.IProfesorService;
 import iesmb.pp3.planillaProfesores.util.ResponseUtil;
 import jakarta.validation.ConstraintViolationException;
 
-@RestController
+@Controller
 @RequestMapping("/profesores")
 public class ProfesorController {
 
 	@Autowired
 	IProfesorService service;
 
-	@GetMapping("")
-	public ResponseEntity<APIResponse<List<Profesor>>>getAllProfesores() {
+	@GetMapping("/")
+	public String getAllProfesores(ModelMap model) {
 
-		return service.getAll().isEmpty() ? ResponseUtil.notFound("No hay profesores creados, por favor, cree algunos a trvés del método POST.")
-			      : ResponseUtil.success(service.getAll());
+		List<Profesor> profe = service.getAll();
+		model.addAttribute("elemento", profe);
+
+		return "index";
 	}
 
 	@GetMapping("/{id}")
