@@ -5,6 +5,7 @@ import iesmb.pp3.planillaProfesores.service.IProfesorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,6 +35,15 @@ public class InicioController {
         Profesor  profe = service.getById(id);
         model.addAttribute("profesor", profe);
         return "profesor";
+    }
+    
+    @DeleteMapping("/chauDni")
+    public String eliminarProfesorXdni(@RequestParam Integer id, ModelMap model) {
+    	
+    	Profesor profe = service.delete(id);
+    	model.put("pruebaDelete", "Chau profe");
+    	
+    	return "morido";
     }
 
 }

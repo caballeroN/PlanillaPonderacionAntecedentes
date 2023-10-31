@@ -35,14 +35,14 @@ public class ProfesorServiceImpl implements IProfesorService {
 	}
 
 	@Override
-	public boolean delete(Integer id){
+	public Profesor delete(Integer id){
 		
 		if(repo.existsById(id)) {
 			repo.deleteById(id);
-			return true;
+			return null;
 		}
 		else {
-			return false;
+			return null;
 		}
 	}
 	
