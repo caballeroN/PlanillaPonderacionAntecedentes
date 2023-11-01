@@ -63,8 +63,8 @@
                     <td scope="row" th:text="${profesor.documento}">
                     <td scope="row" th:text="${profesor.direccion}">
                     <td scope="row" th:text="${profesor.telefono}">
-                  <td>
-                        <a th:href="@{/inicio/borrar(id=${profesor.id})}">Reservar</a>
+                  <td class="danger">
+                        <a th:href="@{/inicio/borrar(id=${profesor.id})}">BORRAR</a>
                     </td>
                 </tr>
                 </tbody>
