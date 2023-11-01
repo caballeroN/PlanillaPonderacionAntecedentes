@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @Controller
@@ -29,6 +30,8 @@ public class InicioController {
         model.addAttribute("profesor", profe);
         return "profesor";
     }
+
+
 
     @GetMapping("/borrar")
     public String borrarxdni(@RequestParam Integer id, ModelMap model) {
