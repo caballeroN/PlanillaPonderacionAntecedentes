@@ -12,7 +12,7 @@ public interface IProfesorService {
 
 	public Profesor save (Profesor profesor);
 
-	public Profesor delete (Integer id);
+	public void delete (Integer id);
 	
 	boolean exists(Integer id);
 }

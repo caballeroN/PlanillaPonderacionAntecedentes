@@ -26,7 +26,7 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/agregar">AGREGAR UN PROFE</a>
+                    <a class="nav-link" href="/inicio/new_profe">AGREGAR UN PROFE</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/editar">EDITAR CALIFICACION</a>
@@ -43,7 +43,16 @@
         </div>
     </div>
 </header>
+<secti>
+    <h3>ingrese el id</h3>
+    <form action="/inicio/buscarxid" method="POST">
+        <label>ingreseel id</label>
+        <input type="number" class="form-control" name="id"/>
+        <br/>
 
+        <br/><button type="submit" class="btn btn-primary">Ingresar</button>
+        <br/>
+    </form></secti>
 <section>
     <div class="container">
         <div class="row align-items-center">
