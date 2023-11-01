@@ -56,8 +56,10 @@ public class ProfesorController {
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<APIResponse<Boolean>> deleteProfesor(@PathVariable("id") Integer id){
-		return service.exists(id) ? ResponseUtil.success(service.delete(service.getById(id).getId()))
-				 : ResponseUtil.notFound("Profesor no encontrado para ese id.");
+//		return service.exists(id) ? ResponseUtil.success(service.delete(service.getById(id).getId()))
+//				 : ResponseUtil.notFound("Profesor no encontrado para ese id.");
+		service.delete(id);
+		return null;
 	}
 
 	@ExceptionHandler(Exception.class)
