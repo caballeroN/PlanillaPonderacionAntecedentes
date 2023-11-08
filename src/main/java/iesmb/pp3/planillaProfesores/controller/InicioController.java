@@ -42,13 +42,13 @@ public class InicioController {
 
 
 
-    @GetMapping("/borrar")
-    public String borrarxdni(@RequestParam Integer id, ModelMap model) {
-        System.out.println("llegue al borrar profesor ");
-        service.delete(id);
-        model.addAttribute("profesor", "profe borrado");
-        return "profesordelete";
-    }
+        @PostMapping("/borrar/{profesorId}")
+        public String borrarxdni(@PathVariable Integer profesorId, ModelMap model) {
+            System.out.println("llegue al borrar profesor ");
+            service.delete(profesorId);
+            model.addAttribute("profesor", "profe borrado");
+            return "profesordelete";
+        }
 
     @GetMapping("/new_profe")
     public String nuevo_profe(ModelMap model) {
@@ -86,7 +86,7 @@ public class InicioController {
     }
 
 
-    @GetMapping("/categorias_t/{profesorId}")
+    @GetMapping("/categorias_t/{profesorId}" )
     public String listarCategorias(@PathVariable Integer profesorId, ModelMap model) {
         System.out.println(" llegue a CATEGORIAS!!!!!");
         List<Categoria> categorias = categoriaService.getAll();
