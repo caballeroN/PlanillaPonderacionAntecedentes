@@ -3,9 +3,11 @@ package iesmb.pp3.planillaProfesores.controller;
 import iesmb.pp3.planillaProfesores.entity.Actividad;
 import iesmb.pp3.planillaProfesores.entity.Categoria;
 import iesmb.pp3.planillaProfesores.entity.Profesor;
+import iesmb.pp3.planillaProfesores.entity.PuntajeActividad;
 import iesmb.pp3.planillaProfesores.service.IActividadService;
 import iesmb.pp3.planillaProfesores.service.ICategoriaService;
 import iesmb.pp3.planillaProfesores.service.IProfesorService;
+import iesmb.pp3.planillaProfesores.service.jpa.PuntajeActividadServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -18,48 +20,44 @@ import java.util.List;
 public class InicioController {
 
     @Autowired
-    IProfesorService service;
-
+    IProfesorService profesorService;
     @Autowired
     ICategoriaService categoriaService;
     @Autowired
     IActividadService actividadService;
+    @Autowired
+    PuntajeActividadServiceImpl puntajeActividadService;
 
     @GetMapping("/profesores")
     public String metodoPrueba(ModelMap model) {
-        List<Profesor> profe = service.getAll();
+        List<Profesor> profe = profesorService.getAll();
         model.addAttribute("profesores", profe);
         return "profesores";
     }
 
     @GetMapping("/xdni")
     public String buscarXdni(@RequestParam Integer id, ModelMap model) {
-        System.out.println("llegue al profesor ");
-        Profesor  profe = service.getById(id);
+        Profesor profe = profesorService.getById(id);
         model.addAttribute("profesor", profe);
         return "profesor";
     }
 
-
-
-        @PostMapping("/borrar/{profesorId}")
-        public String borrarxdni(@PathVariable Integer profesorId, ModelMap model) {
-            System.out.println("llegue al borrar profesor ");
-            service.delete(profesorId);
-            model.addAttribute("profesor", "profe borrado");
-            return "profesordelete";
-        }
+    @PostMapping("/borrar/{profesorId}")
+    public String borrarxdni(@PathVariable Integer profesorId, ModelMap model) {
+        profesorService.delete(profesorId);
+        model.addAttribute("profesor", "profe borrado");
+        return "profesordelete";
+    }
 
     @GetMapping("/new_profe")
     public String nuevo_profe(ModelMap model) {
-        System.out.println("llegue al cargar un nuevo profesor ");
         model.addAttribute("profesor", "profe borrado");
         return "cargar_profesor";
     }
+
     @PostMapping("/buscarxid")
     public String buscarProfeXId(@RequestParam Integer id, ModelMap model) {
-        System.out.println("llegue al buscar x id");
-        Profesor  profe = service.getById(id);
+        Profesor profe = profesorService.getById(id);
         if(profe != null){
             model.addAttribute("id", profe.getId());
             return buscarXdni(profe.getId(), model);
@@ -67,6 +65,7 @@ public class InicioController {
             return "datos_personales";
         }
     }
+
     @PostMapping("/guardar_profe")
     public String guardar_profe(@RequestParam String nombre,
                                 @RequestParam String apellido,
@@ -74,36 +73,41 @@ public class InicioController {
                                 @RequestParam String telefono,
                                 @RequestParam String dni,
                                 ModelMap model) {
-        System.out.println("llegue al guardar profe su nombre es  " + nombre);
         Profesor newProfe = new Profesor();
         newProfe.setNombre(nombre);
         newProfe.setApellido(apellido);
         newProfe.setDireccion(direccion);
         newProfe.setTelefono(telefono);
         newProfe.setDocumento(dni);
-        service.save(newProfe);
+        profesorService.save(newProfe);
         return "exito";
     }
 
-
     @GetMapping("/categorias_t/{profesorId}" )
     public String listarCategorias(@PathVariable Integer profesorId, ModelMap model) {
-        System.out.println(" llegue a CATEGORIAS!!!!!");
         List<Categoria> categorias = categoriaService.getAll();
         model.put("lCategorias", categorias);
         model.put("profesorId", profesorId);
         return "categorias";
     }
 
-
     @PostMapping("/categorias_t/{profesorId}")
-    public String cargarNotaPorCategoria(@PathVariable Integer profesorId, @RequestParam(name = "categoriasSeleccionadas", required = false) List<String> categoriasSeleccionadas, ModelMap model) {
-        System.out.println("llegue a cargarNotaPorCategoria");
+    public String cargarNotaPorCategoria(@PathVariable Integer profesorId,
+                                         @RequestParam(name = "categoriasSeleccionadas", required = false) List<String> categoriasSeleccionadas,
+                                         ModelMap model) {
+        String strCategoriasSeleccionadas = "";
+        if (categoriasSeleccionadas.size() > 0) {
+            for (int i = 0; i < categoriasSeleccionadas.size(); i++) {
+                strCategoriasSeleccionadas += categoriasSeleccionadas.get(i) + ", ";
+            }
+        }
+
         if (categoriasSeleccionadas != null && !categoriasSeleccionadas.isEmpty()) {
             String categoriaId = categoriasSeleccionadas.get(0); // Obtén el primer elemento
             Categoria categoria = categoriaService.getById(Integer.valueOf(categoriaId));
             List<Actividad> actividades = categoria.getActividades();
             model.put("profesorId", profesorId);
+            model.put("strCategoriasSeleccionadas", strCategoriasSeleccionadas);
             model.put("categoria", categoria);
             model.put("actividades", actividades);
             model.put("categoriasSeleccionadas", categoriasSeleccionadas); // Agregar a modelo
@@ -113,34 +117,29 @@ public class InicioController {
     }
 
     @PostMapping("/categoria_t/{profesorId}")
-    public String iterarCategoria(@PathVariable Integer profesorId, @RequestParam(name = "categoriasSeleccionadas", required = false) List<String> categoriasSeleccionadas,
+    public String iterarCategoria(@PathVariable Integer profesorId,
+                                  @RequestParam(name = "strCategoriasSeleccionadas") String strCategoriasSeleccionadas,
                                   @RequestParam(name = "asignados") List<String> asignados, ModelMap model) {
-        System.out.println("LLEGUE A CATEGORIA CON POST  ");
-
-        System.out.println(asignados.size());
-        int aux = 1;
-        for (String asignado : asignados) {
-            System.out.println(aux + "_  " + asignado);
-            aux++;
+        int idCategoria = Integer.parseInt(strCategoriasSeleccionadas.split(",")[0].trim());
+        Profesor profesor = profesorService.getById(profesorId);
+        List<PuntajeActividad> puntajesActividad = profesor.getPuntajesActividad();
+        Categoria categoria = categoriaService.getById((idCategoria));
+        List<Actividad> actividades = categoria.getActividades();
+        while (puntajesActividad.size() < asignados.size()) {
+            puntajesActividad.add(new PuntajeActividad());
         }
-        if (categoriasSeleccionadas != null && categoriasSeleccionadas.size() > 1) {
-            System.out.println("categorias  " + categoriasSeleccionadas.get(0));
-            System.out.println("profesor id   " + profesorId);
-
-            // Obtén la categoría actual y sus actividades
-            String categoriaId = categoriasSeleccionadas.get(0);
-            Categoria categoria = categoriaService.getById(Integer.valueOf(categoriaId));
-            List<Actividad> actividades = categoria.getActividades();
-
-            // Procesa las modificaciones y guarda en la base de datos (ejemplo simplificado)
-            for (Actividad actividad : actividades) {
-                // Realiza operaciones de actualización en la base de datos
-                actividadService.save(actividad);
-            }
-            categoriasSeleccionadas.remove(0); // Elimina el primer elemento
-            model.put("categoriasSeleccionadas", categoriasSeleccionadas); // Mantén la lista restante
-            return "forward:/categorias_t"; // Redirige de nuevo al controlador anterior
+        int minSize = Math.min(asignados.size(), puntajesActividad.size());
+        for (int i = 0; i < minSize; i++) {
+            PuntajeActividad puntajeActividad = puntajesActividad.get(i);
+            puntajeActividad.setPuntaje(((asignados.get(i)).isEmpty()) ? 0 : Integer.parseInt(asignados.get(i)));
+            // Asocia el puntaje con el profesor
+            puntajeActividad.setProfesor(profesor);
+            // Asocia el puntaje con la actividad
+            Actividad actividad = actividadService.getById(actividades.get(i).getId());
+            puntajeActividad.setActividad(actividad);
+            // Guardar el puntaje en la base de datos
+            puntajeActividadService.save(puntajeActividad);
         }
-        return "exito"; // o la página a la que desees redirigir cuando no haya más categorías
+        return "exito";
     }
 }
