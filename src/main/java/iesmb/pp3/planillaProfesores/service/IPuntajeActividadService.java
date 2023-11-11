@@ -15,4 +15,9 @@ public interface IPuntajeActividadService {
 	public boolean delete (Integer id);
 	
 	boolean exists(Integer id);
+
+
+	public 	List<PuntajeActividad> getPuntajesActividadPorProfesor(Integer profesorId);
+
+
 }

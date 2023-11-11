@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -101,16 +102,38 @@ public class InicioController {
                 strCategoriasSeleccionadas += categoriasSeleccionadas.get(i) + ", ";
             }
         }
+        List<List<String>> globalTabla = new ArrayList<>();
 
         if (categoriasSeleccionadas != null && !categoriasSeleccionadas.isEmpty()) {
             String categoriaId = categoriasSeleccionadas.get(0); // Obtén el primer elemento
             Categoria categoria = categoriaService.getById(Integer.valueOf(categoriaId));
             List<Actividad> actividades = categoria.getActividades();
+            List<PuntajeActividad> puntuacionXactividad = puntajeActividadService.getPuntajesActividadPorProfesor(profesorId);
+            System.out.println("Tamaño de actividades: " + actividades.size());
+            System.out.println("Tamaño de puntuacionXactividad: " + puntuacionXactividad.size());
+
+
+            for (int i = 0; i < actividades.size(); i++) {
+                List<String> fila = new ArrayList<>();
+                fila.add(String.valueOf(actividades.get(i).getId()));
+                fila.add(actividades.get(i).getNombre());
+                fila.add(String.valueOf(actividades.get(i).getPuntuacion()));
+                // Asegúrate de que haya un puntaje disponible para esta actividad
+                if (i < puntuacionXactividad.size()) {
+                    fila.add(String.valueOf(puntuacionXactividad.get(i).getPuntaje()));
+                } else {
+                    // Si no hay puntaje disponible, agrega cero
+                    fila.add("0");
+                }
+                globalTabla.add(fila);
+            }
+            System.out.println("###$$$$##### globalTabla.get(0)    "+ globalTabla.get(0));
+            System.out.println("###$$#  globalTabla.size()  "+ globalTabla.size());
             model.put("profesorId", profesorId);
             model.put("strCategoriasSeleccionadas", strCategoriasSeleccionadas);
             model.put("categoria", categoria);
-            model.put("actividades", actividades);
-            model.put("categoriasSeleccionadas", categoriasSeleccionadas); // Agregar a modelo
+            model.put("globalTabla", globalTabla);
+            model.put("categoriasSeleccionadas", categoriasSeleccionadas);
             return "categoria";
         }
         return "exito";
@@ -119,19 +142,23 @@ public class InicioController {
     @PostMapping("/categoria_t/{profesorId}")
     public String iterarCategoria(@PathVariable Integer profesorId,
                                   @RequestParam(name = "strCategoriasSeleccionadas") String strCategoriasSeleccionadas,
-                                  @RequestParam(name = "asignados") List<String> asignados, ModelMap model) {
+                                  @RequestParam(name = "globalTabla") List<List<String>> globalTabla, ModelMap model) {
+
         int idCategoria = Integer.parseInt(strCategoriasSeleccionadas.split(",")[0].trim());
+        int resultadoParcial = 0;
+        int contador =0;
         Profesor profesor = profesorService.getById(profesorId);
         List<PuntajeActividad> puntajesActividad = profesor.getPuntajesActividad();
         Categoria categoria = categoriaService.getById((idCategoria));
         List<Actividad> actividades = categoria.getActividades();
-        while (puntajesActividad.size() < asignados.size()) {
+        while (puntajesActividad.size() < globalTabla.size()) {
             puntajesActividad.add(new PuntajeActividad());
         }
-        int minSize = Math.min(asignados.size(), puntajesActividad.size());
+        int minSize = Math.min(globalTabla.size(), puntajesActividad.size());
         for (int i = 0; i < minSize; i++) {
             PuntajeActividad puntajeActividad = puntajesActividad.get(i);
-            puntajeActividad.setPuntaje(((asignados.get(i)).isEmpty()) ? 0 : Integer.parseInt(asignados.get(i)));
+            resultadoParcial += puntajeActividad.getPuntaje();
+        //    puntajeActividad.setPuntaje(((globalTabla.get(i)).isEmpty()) ? 0 : Integer.parseInt(globalTabla.get(i)));
             // Asocia el puntaje con el profesor
             puntajeActividad.setProfesor(profesor);
             // Asocia el puntaje con la actividad
@@ -139,7 +166,15 @@ public class InicioController {
             puntajeActividad.setActividad(actividad);
             // Guardar el puntaje en la base de datos
             puntajeActividadService.save(puntajeActividad);
+            contador = i + 1 ;
         }
+        categoria.setTotalPuntosXCategoria(resultadoParcial);
+        categoriaService.save(categoria);
+        System.out.println("ID + nombre profesor "+profesor.getId() + profesor.getNombre());
+        System.out.println(" total       = nomber Categoria \n"+ categoria.getTotalPuntosXCategoria()+categoria.getNombre());
+        System.out.println(" cantidad de categorias para esta categoria es = "+contador);
+        System.out.println("\nNombre de la primer actividad \n"+ actividades.get(0).getNombre());
+        System.out.println("\nNombre de la ultima actividad \n"+ actividades.get(actividades.size()-1).getNombre());
         return "exito";
     }
 }

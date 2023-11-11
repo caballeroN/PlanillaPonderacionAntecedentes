@@ -14,9 +14,9 @@ public class Categoria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     private String nombre;
     private int puntuacionMaxima;
+    private int totalPuntosXCategoria;
 
     @OneToMany(mappedBy = "categoria")
     private List<Actividad> actividades;
@@ -25,13 +25,21 @@ public class Categoria {
         actividades = new ArrayList<>();
     }
 
-    public Categoria(String nombre, int puntuacionMaxima) {
+    public Categoria(String nombre, int puntuacionMaxima, int totalPuntosXCategoria) {
         this.nombre = nombre;
         this.puntuacionMaxima = puntuacionMaxima;
+        this.totalPuntosXCategoria = totalPuntosXCategoria;
         actividades = new ArrayList<>();
     }
 
-    
+    public int getTotalPuntosXCategoria() {
+        return totalPuntosXCategoria;
+    }
+
+    public void setTotalPuntosXCategoria(int totalPuntosXCategoria) {
+        this.totalPuntosXCategoria = totalPuntosXCategoria;
+    }
+
     public Integer getId() {
 		return id;
 	}
