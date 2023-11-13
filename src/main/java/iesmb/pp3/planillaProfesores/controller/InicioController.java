@@ -1,9 +1,6 @@
 package iesmb.pp3.planillaProfesores.controller;
 
-import iesmb.pp3.planillaProfesores.entity.Actividad;
-import iesmb.pp3.planillaProfesores.entity.Categoria;
-import iesmb.pp3.planillaProfesores.entity.Profesor;
-import iesmb.pp3.planillaProfesores.entity.PuntajeActividad;
+import iesmb.pp3.planillaProfesores.entity.*;
 import iesmb.pp3.planillaProfesores.service.IActividadService;
 import iesmb.pp3.planillaProfesores.service.ICategoriaService;
 import iesmb.pp3.planillaProfesores.service.IProfesorService;
@@ -13,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -86,40 +85,79 @@ public class InicioController {
     @GetMapping("/categorias_t/{profesorId}" )
     public String listarCategorias(@PathVariable Integer profesorId, ModelMap model) {
         List<Categoria> categorias = categoriaService.getAll();
+        System.out.println(""+ categorias.get(0).getId());
         model.put("lCategorias", categorias);
         model.put("profesorId", profesorId);
         return "categorias";
     }
-
-    @PostMapping("/categorias_t/{profesorId}")
+    @PostMapping("/categorias_p/{profesorId}")
     public String cargarNotaPorCategoria(@PathVariable Integer profesorId,
                                          @RequestParam(name = "categoriasSeleccionadas", required = false) List<String> categoriasSeleccionadas,
                                          ModelMap model) {
-        String strCategoriasSeleccionadas = "";
-        if (categoriasSeleccionadas.size() > 0) {
-            for (int i = 0; i < categoriasSeleccionadas.size(); i++) {
-                strCategoriasSeleccionadas += categoriasSeleccionadas.get(i) + ", ";
-            }
-        }
+        Profesor profesor = profesorService.getById(profesorId);
+        String profesor_nombre = profesor.getNombre();
+        String strNameCategoria;
 
+        String strCategoriasSeleccionadas = "";
+        System.out.println("antes del if!!!!!!!!!!!!!!!!");
+        System.out.println("categoria seleccionada "+categoriasSeleccionadas  );
         if (categoriasSeleccionadas != null && !categoriasSeleccionadas.isEmpty()) {
+            System.out.println("if 1 ");
             String categoriaId = categoriasSeleccionadas.get(0); // Obtén el primer elemento
             Categoria categoria = categoriaService.getById(Integer.valueOf(categoriaId));
+            strNameCategoria= categoria.getNombre();
+            // Obtener actividades y puntajes
             List<Actividad> actividades = categoria.getActividades();
+            List<PuntajeActividad> puntajes = puntajeActividadService.obtenerPuntajesPorProfesorYCategoria(profesor, categoria);
+
+            // Combinar las listas
+            List<ActividadConPuntaje> actividadesConPuntajes = new ArrayList<>();
+
+            for (int i = 0; i < actividades.size(); i++) {
+                ActividadConPuntaje actividadConPuntaje = new ActividadConPuntaje();
+                actividadConPuntaje.setActividad(actividades.get(i));
+                // Asegúrate de manejar correctamente los índices para evitar IndexOutOfBoundsException
+                if (i < puntajes.size()) {
+                    actividadConPuntaje.setPuntajeActividad(puntajes.get(i));
+                }else{
+                    PuntajeActividad puntajeDefault = new PuntajeActividad();
+                    puntajeDefault.setPuntaje(0);
+                    actividadConPuntaje.setPuntajeActividad(puntajeDefault);
+                }
+                actividadesConPuntajes.add(actividadConPuntaje);
+            }
+
+            strCategoriasSeleccionadas = String.join(", ", categoriasSeleccionadas);
+            System.out.println(" 133 strCategoriasSeleccionadas = "+strCategoriasSeleccionadas);
+
+            model.put("nameCategoria", strNameCategoria);
             model.put("profesorId", profesorId);
+            model.put("profesor_nombre", profesor_nombre);
+            model.put("actividadesConPuntajes", actividadesConPuntajes);
             model.put("strCategoriasSeleccionadas", strCategoriasSeleccionadas);
-            model.put("categoria", categoria);
-            model.put("actividades", actividades);
             model.put("categoriasSeleccionadas", categoriasSeleccionadas); // Agregar a modelo
             return "categoria";
         }
+
+        // Manejar el caso en que no hay categorías seleccionadas
+        model.put("profesorId", profesorId);
+        model.put("profesor_nombre", profesor_nombre);
+        model.put("strCategoriasSeleccionadas", strCategoriasSeleccionadas);
+        model.put("categoriasSeleccionadas", categoriasSeleccionadas); // Agregar a modelo
         return "exito";
     }
+// REVISION
 
+
+//del categoria.html con el metodo post
     @PostMapping("/categoria_t/{profesorId}")
     public String iterarCategoria(@PathVariable Integer profesorId,
+                                  @RequestParam(name = "categoriasSeleccionadas", required = false) List<String> categoriasSeleccionadas,
+
                                   @RequestParam(name = "strCategoriasSeleccionadas") String strCategoriasSeleccionadas,
                                   @RequestParam(name = "asignados") List<String> asignados, ModelMap model) {
+
+        System.out.println(("$#$$$#$$$# 162  categoriasSeleccionadas  "+categoriasSeleccionadas));
         int idCategoria = Integer.parseInt(strCategoriasSeleccionadas.split(",")[0].trim());
         Profesor profesor = profesorService.getById(profesorId);
         List<PuntajeActividad> puntajesActividad = profesor.getPuntajesActividad();
@@ -140,6 +178,15 @@ public class InicioController {
             // Guardar el puntaje en la base de datos
             puntajeActividadService.save(puntajeActividad);
         }
+        System.out.println("179 strCategoriasSeleccionadas = "+strCategoriasSeleccionadas);
+        System.out.println("SALIENDO!!!!");
+
+//        model.put("nameCategoria", strNameCategoria);
+        model.put("profesorId", profesorId);
+//        model.put("profesor_nombre", profesor_nombre);
+//        model.put("actividadesConPuntajes", actividadesConPuntajes);
+        model.put("strCategoriasSeleccionadas", strCategoriasSeleccionadas);
+        model.put("categoriasSeleccionadas", categoriasSeleccionadas); // Agregar a modelo
         return "exito";
     }
 }

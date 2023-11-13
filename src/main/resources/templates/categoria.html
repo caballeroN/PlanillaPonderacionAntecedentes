@@ -32,9 +32,10 @@
                 <input type="hidden" name="profesorId" th:value="${profesorId}"/>
                 <input type="hidden" name="strCategoriasSeleccionadas" th:value="${strCategoriasSeleccionadas}"/>
 
-                <input type="hidden" name="categoriasSeleccionadas" th:field="*{categoriasSeleccionadas}"/>
-                <h7 th:text="${profesorId}"></h7>
-                <h6 th:text="${categoria.nombre}"></h6>
+                <input type="hidden" name="categoriasSeleccionadas" th:value="*{categoriasSeleccionadas}"/>
+                <h7 th:text="${profesorId}">ID Profesor</h7>
+                <h6 th:text="${profesor_nombre}"> </h6>
+                <h6 th:text="${nameCategoria}"></h6>
 
                 <table class="table table-hover">
                     <thead>
@@ -46,14 +47,13 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="actividad : ${actividades}">
-                        <td scope="row" th:text="${actividad.id}">
-                        <td scope="row" th:text="${actividad.nombre}">
-                        <td>0 puntos maximos</td>
-                        <!--                    <td scope="row" th:text="${actividad.puntosmaximos}">-->
+                    <tr th:each="item : ${actividadesConPuntajes}">
+                        <td scope="row" th:text="${item.actividad.id}"></td>
+                        <td scope="row" th:text="${item.actividad.nombre}"></td>
+                        <td scope="row" th:text="${item.actividad.puntuacion}"></td>
                         <td>
-                            <input type="text" th:text="${actividad.puntuacion}" name="asignados"
-                                   onchange="calcularSumaAsignados()" placeholder="0"/>
+                            <input type="text" th:value="${item.puntajeActividad.puntaje}" name="asignados"
+                                   onchange="calcularSumaAsignados()" placeholder="0"></td>
                     </tr>
                     </tbody>
                 </table>
