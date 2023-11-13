@@ -47,7 +47,7 @@
     <div class="container">
         <div class="row align-items-center">
             <p> lista de Categorias </p>
-            <form th:action="@{'/inicio/categorias_t/' + ${profesorId}}" method="post">
+            <form th:action="@{'/inicio/categorias_p/' + ${profesorId}}" method="post">
                 <input type="hidden" name="profesorId" th:value="${profesorId}" />
 
                 <table class="table table-hover">
@@ -63,7 +63,7 @@
                 </thead>
                 <tbody>
                 <tr th:each="categoria : ${lCategorias}">
-                    <td scope="row" th:text="${categoria.id}">
+                    <td th:text="${categoria.id}">
                     <td scope="row" th:text="${categoria.id}">
                     <td scope="row" th:text="${categoria.nombre}">
                     <td scope="row" th:text="${categoria.puntuacionMaxima}">

@@ -13,11 +13,6 @@ public interface IPuntajeActividadService {
 	public PuntajeActividad save (PuntajeActividad puntajeActividad);
 
 	public boolean delete (Integer id);
-	
+
 	boolean exists(Integer id);
-
-
-	public 	List<PuntajeActividad> getPuntajesActividadPorProfesor(Integer profesorId);
-
-
 }

@@ -16,7 +16,7 @@ public class Categoria {
     private Integer id;
     private String nombre;
     private int puntuacionMaxima;
-    private int totalPuntosXCategoria;
+    private int totalPtsXCategoria;
 
     @OneToMany(mappedBy = "categoria")
     private List<Actividad> actividades;
@@ -25,21 +25,14 @@ public class Categoria {
         actividades = new ArrayList<>();
     }
 
-    public Categoria(String nombre, int puntuacionMaxima, int totalPuntosXCategoria) {
+    public Categoria(String nombre, int puntuacionMaxima, int totalPtsXCategoria) {
         this.nombre = nombre;
         this.puntuacionMaxima = puntuacionMaxima;
-        this.totalPuntosXCategoria = totalPuntosXCategoria;
+        this.totalPtsXCategoria = totalPtsXCategoria;
         actividades = new ArrayList<>();
     }
 
-    public int getTotalPuntosXCategoria() {
-        return totalPuntosXCategoria;
-    }
-
-    public void setTotalPuntosXCategoria(int totalPuntosXCategoria) {
-        this.totalPuntosXCategoria = totalPuntosXCategoria;
-    }
-
+    
     public Integer getId() {
 		return id;
 	}
@@ -70,5 +63,13 @@ public class Categoria {
 
     public void setActividades(List<Actividad> actividades) {
         this.actividades = actividades;
+    }
+
+    public int getTotalPtsXCategoria() {
+        return totalPtsXCategoria;
+    }
+
+    public void setTotalPtsXCategoria(int totalPtsXCategoria) {
+        this.totalPtsXCategoria = totalPtsXCategoria;
     }
 }

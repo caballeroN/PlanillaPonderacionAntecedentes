@@ -28,76 +28,38 @@
     <p> lista de Actividades por Categoria </p>
     <div class="container">
         <div class="row align-items-center">
-
             <form th:action="@{'/inicio/categoria_t/' + ${profesorId}}" method="post">
                 <input type="hidden" name="profesorId" th:value="${profesorId}"/>
                 <input type="hidden" name="strCategoriasSeleccionadas" th:value="${strCategoriasSeleccionadas}"/>
-                <input type="hidden" name="categoriasSeleccionadas" th:field="*{categoriasSeleccionadas}"/>
-                <input type="hidden" name="globalTabla" th:field="*{globalTabla}"/>
 
-                <h7 th:text="${profesorId}"></h7>
-                <h6 th:text="${categoria.nombre}"></h6>
+                <input type="hidden" name="categoriasSeleccionadas" th:value="*{categoriasSeleccionadas}"/>
+                <h7 th:text="${profesorId}">ID Profesor</h7>
+                <h6 th:text="${profesor_nombre}"> </h6>
+                <h6 th:text="${nameCategoria}"></h6>
 
                 <table class="table table-hover">
                     <thead>
                     <tr>
                         <th scope="col">ID actividad</th>
                         <th scope="col">Nombre Actividad</th>
-                        <th scope="col">Pts maximos.</th>
+                        <th scope="col">Pts.</th>
                         <th scope="col">Puntos Asignados</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="fila, filaStat : ${globalTabla}">
-                        <td th:text="${fila[0]}"></td>
-                        <td th:text="${fila[1]}"></td>
-                        <td th:text="${fila[2]}"></td>
+                    <tr th:each="item : ${actividadesConPuntajes}">
+                        <td scope="row" th:text="${item.actividad.id}"></td>
+                        <td scope="row" th:text="${item.actividad.nombre}"></td>
+                        <td scope="row" th:text="${item.actividad.puntuacion}"></td>
                         <td>
-                            <input type="text" th:value="${fila[3]}" name="globalTabla[__${filaStat.index}__][3]"
-                                   onchange="calcularSumaAsignados()" placeholder="0"/>
-                        </td>
+                            <input type="text" th:value="${item.puntajeActividad.puntaje}" name="asignados"
+                                   onchange="calcularSumaAsignados()" placeholder="0"></td>
                     </tr>
                     </tbody>
-
                 </table>
                 <div id="totalParcial" class="text-right">Total Parcial: 0</div>
                 <button type="submit">Enviar</button>
             </form>
-
-
-            <!--            <form th:action="@{'/inicio/categoria_t/' + ${profesorId}}" method="post">-->
-            <!--                <input type="hidden" name="profesorId" th:value="${profesorId}"/>-->
-            <!--                <input type="hidden" name="strCategoriasSeleccionadas" th:value="${strCategoriasSeleccionadas}"/>-->
-
-            <!--                <input type="hidden" name="categoriasSeleccionadas" th:field="*{categoriasSeleccionadas}"/>-->
-            <!--                <h7 th:text="${profesorId}"></h7>-->
-            <!--                <h6 th:text="${categoria.nombre}"></h6>-->
-
-            <!--                <table class="table table-hover">-->
-            <!--                    <thead>-->
-            <!--                    <tr>-->
-            <!--                        <th scope="col">ID actividad</th>-->
-            <!--                        <th scope="col">Nombre Actividad</th>-->
-            <!--                        <th scope="col">Pts.</th>-->
-            <!--                        <th scope="col">Puntos Asignados</th>-->
-            <!--                    </tr>-->
-            <!--                    </thead>-->
-            <!--                    <tbody>-->
-            <!--                    <tr th:each="actividad : ${actividades}">-->
-            <!--                        <td scope="row" th:text="${actividad.id}">-->
-            <!--                        <td scope="row" th:text="${actividad.nombre}">-->
-            <!--                        <td>0 puntos maximos</td>-->
-            <!--                        &lt;!&ndash;                    <td scope="row" th:text="${actividad.puntosmaximos}">&ndash;&gt;-->
-            <!--                        <td>-->
-            <!--                            <input type="text" th:text="${actividad.puntuacion}" name="asignados"-->
-            <!--                                   onchange="calcularSumaAsignados()" placeholder="0"/>-->
-            <!--                    </tr>-->
-
-            <!--                    </tbody>-->
-            <!--                </table>-->
-            <!--                <div id="totalParcial" class="text-right">Total Parcial: 0</div>-->
-            <!--                <button type="submit">Enviar</button>-->
-            <!--            </form>-->
         </div>
     </div>
 </section>
@@ -111,7 +73,7 @@
 <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script>
 function calcularSumaAsignados() {
-    const inputs = document.getElementsByName('globalTabla[__${filaStat.index}__][3]');
+    const inputs = document.getElementsByName('asignados');
     let suma = 0;
 
     for (let i = 0; i < inputs.length; i++) {
