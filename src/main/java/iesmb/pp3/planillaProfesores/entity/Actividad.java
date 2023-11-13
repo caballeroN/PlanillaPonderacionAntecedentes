@@ -17,7 +17,6 @@ public class Actividad {
 
     private String nombre;
     private int puntuacion;
-
     @ManyToOne
     private Categoria categoria;
 
@@ -33,8 +32,6 @@ public class Actividad {
         this.puntuacion = puntuacion;
         puntajesActividad = new ArrayList<>();
     }
-
-    
 
     public Integer getId() {
 		return id;
