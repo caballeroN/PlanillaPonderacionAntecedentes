@@ -17,7 +17,6 @@ public class Actividad {
 
     private String nombre;
     private int puntuacion;
-    private int ptsAsignados;
     @ManyToOne
     private Categoria categoria;
 
@@ -28,19 +27,10 @@ public class Actividad {
         puntajesActividad = new ArrayList<>();
     }
 
-    public Actividad(String nombre, int puntuacion, int ptsAsignados) {
+    public Actividad(String nombre, int puntuacion) {
         this.nombre = nombre;
         this.puntuacion = puntuacion;
-        this.ptsAsignados = ptsAsignados;
         puntajesActividad = new ArrayList<>();
-    }
-
-    public int getPtsAsignados() {
-        return ptsAsignados;
-    }
-
-    public void setPtsAsignados(int ptsAsignados) {
-        this.ptsAsignados = ptsAsignados;
     }
 
     public Integer getId() {
