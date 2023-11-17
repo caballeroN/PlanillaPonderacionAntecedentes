@@ -51,7 +51,7 @@ public class InicioController {
     @GetMapping("/new_profe")
     public String nuevo_profe(ModelMap model) {
         model.addAttribute("profesor", "profe borrado");
-        return "cargar_profesor";
+        return "datos_personales";
     }
 
     @PostMapping("/buscarxid")
@@ -64,6 +64,7 @@ public class InicioController {
             return "datos_personales";
         }
     }
+
 
     @PostMapping("/guardar_profe")
     public String guardar_profe(@RequestParam String nombre,
