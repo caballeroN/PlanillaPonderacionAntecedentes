@@ -48,9 +48,11 @@ public class InicioController {
         return "profesordelete";
     }
 
-    @GetMapping("/new_profe")
-    public String nuevo_profe(ModelMap model) {
-        model.addAttribute("profesor", "profe borrado");
+
+    @GetMapping("/new_profe/{profesorId}")
+    public String nuevo_profe(@PathVariable Integer profesorId, ModelMap model) {
+        Profesor profe = profesorService.getById(profesorId);
+        model.addAttribute("profesor", profe);
         return "datos_personales";
     }
 
@@ -61,6 +63,8 @@ public class InicioController {
             model.addAttribute("id", profe.getId());
             return buscarXdni(profe.getId(), model);
         }else {
+            profe = new Profesor();
+            model.put("profesor", profe);
             return "datos_personales";
         }
     }
@@ -71,14 +75,21 @@ public class InicioController {
                                 @RequestParam String apellido,
                                 @RequestParam String direccion,
                                 @RequestParam String telefono,
-                                @RequestParam String dni,
+                                @RequestParam String documento,
+                                @RequestParam(name = "id", required = false)  Integer id,
                                 ModelMap model) {
-        Profesor newProfe = new Profesor();
+        Profesor newProfe;
+        if (id == null || id == 0){
+            newProfe = new Profesor();
+        }else{
+            newProfe= profesorService.getById(id);
+        }
+
         newProfe.setNombre(nombre);
         newProfe.setApellido(apellido);
         newProfe.setDireccion(direccion);
         newProfe.setTelefono(telefono);
-        newProfe.setDocumento(dni);
+        newProfe.setDocumento(documento);
         profesorService.save(newProfe);
         return "exito";
     }

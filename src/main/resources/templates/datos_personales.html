@@ -48,23 +48,22 @@
             <div class="col-lg-6 order-lg-1">
                 <div class="p-5">
                     <h1 class="display-5">Formulario de datos personales</h1>
-                     <form action="/inicio/guardar_profe" method="POST" enctype="multipart/form-data">
-<!--                        <input type="hidden" name="idc" th:value="${clienteLog.id}">-->
-<!--                        <input type="hidden" name="idv" th:value="${vehiculo.id}">-->
+                    <form th:object="${profesor}" action="/inicio/guardar_profe" method="POST"
+                          enctype="multipart/form-data">
+                        <input type="hidden" name="id" th:if="${profesor != null}" th:value="${profesor.id}"/>
 
                         <label><h3>DATOS DEL Profe</h3></label><br>
-<!--                        <label>ID - Profesor</label>-->
-<!--                        <input type="text" class="form-control mayus" name="id" th:value="${clienteLog.id}"/>-->
                         <label>Nombre</label>
-                        <input type="text" class="form-control mayus" name="nombre" />
+                        <input type="text" class="form-control mayus" name="nombre" th:field="*{nombre}"/>
+
                         <label>Apellido</label>
-                        <input type="text" class="form-control mayus" name="apellido"/>
+                        <input type="text" class="form-control mayus" name="apellido" th:field="*{apellido}"/>
                         <label>DNI</label>
-                        <input type="text" class="form-control" name="dni"/>
+                        <input type="text" class="form-control" name="documento" th:field="*{documento}"/>
                         <label>direccion</label>
-                        <input type="text" class="form-control" name="direccion"/>
+                        <input type="text" class="form-control" name="direccion" th:field="*{direccion}"/>
                         <label>Telefono</label>
-                        <input type="text" class="form-control" name="telefono" />
+                        <input type="text" class="form-control" name="telefono" th:field="*{telefono}"/>
 
                         <button type="submit" class="btn btn-primary">Guardar</button>
                     </form>
