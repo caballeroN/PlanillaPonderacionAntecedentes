@@ -107,7 +107,6 @@ public class InicioController {
         Profesor profesor = profesorService.getById(profesorId);
         String profesor_nombre = profesor.getNombre();
         String strNameCategoria = "";
-        int cantidadCategoriasSeleccionadas = 0;
 
         if (categoriasSeleccionadas == null || categoriasSeleccionadas.isEmpty()) {
             categoriasSeleccionadas = Arrays.asList(strCategoriasSeleccionadas.split(",\\s*"));
@@ -119,7 +118,6 @@ public class InicioController {
             // Obtener actividades y puntajes
             List<Actividad> actividades = categoria.getActividades();
             List<PuntajeActividad> puntajes = puntajeActividadService.obtenerPuntajesPorProfesorYCategoria(profesor, categoria);
-
             // Combinar las listas
             List<ActividadConPuntaje> actividadesConPuntajes = new ArrayList<>();
 
@@ -136,9 +134,7 @@ public class InicioController {
                 }
                 actividadesConPuntajes.add(actividadConPuntaje);
             }
-
             strCategoriasSeleccionadas = String.join(", ", categoriasSeleccionadas);
-
             model.put("nameCategoria", strNameCategoria);
             model.put("profesorId", profesorId);
             model.put("profesor_nombre", profesor_nombre);
@@ -147,34 +143,28 @@ public class InicioController {
             model.put("categoriasSeleccionadas", categoriasSeleccionadas); // Agregar a modelo
             return "categoria";
         }
-
-
         return "error";
     }
     @PostMapping("/categoria_t/{profesorId}")
     public String iterarCategoria(@PathVariable Integer profesorId,
                                   @RequestParam(name = "strCategoriasSeleccionadas") String strCategoriasSeleccionadas,
                                   @RequestParam(name = "asignados") List<String> asignados, ModelMap model) {
-
         int idCategoria = Integer.parseInt(strCategoriasSeleccionadas.split(",")[0].trim());
         Profesor profesor = profesorService.getById(profesorId);
-        List<PuntajeActividad> puntajesActividad = profesor.getPuntajesActividad();
-        Categoria categoria = categoriaService.getById((idCategoria));
+        Categoria categoria = categoriaService.getById(idCategoria);
+
+        // Obtener las actividades de la categoría seleccionada
         List<Actividad> actividades = categoria.getActividades();
-        while (puntajesActividad.size() < asignados.size()) {
-            puntajesActividad.add(new PuntajeActividad());
-        }
-        int minSize = Math.min(asignados.size(), puntajesActividad.size());
-        String strNewListaCategSelec = "";
-        for (int i = 0; i < minSize; i++) {
-            PuntajeActividad puntajeActividad = puntajesActividad.get(i);
-            puntajeActividad.setPuntaje(((asignados.get(i)).isEmpty()) ? 0 : Integer.parseInt(asignados.get(i)));
-            // Asocia el puntaje con el profesor
+
+        // Obtener o inicializar los puntajesActividad del profesor para esta categoría
+        List<PuntajeActividad> puntajesActividad = puntajeActividadService.obtenerPuntajesActividad(profesor, actividades);
+
+        // Iterar sobre los puntajes y asignar valores
+        for (int i = 0; i < asignados.size(); i++) {
+            PuntajeActividad puntajeActividad = puntajeActividadService.obtenerPuntajeActividad(puntajesActividad, actividades.get(i));
+            puntajeActividad.setPuntaje((asignados.get(i)).isEmpty() ? 0 : Integer.parseInt(asignados.get(i)));
             puntajeActividad.setProfesor(profesor);
-            // Asocia el puntaje con la actividad
-            Actividad actividad = actividadService.getById(actividades.get(i).getId());
-            puntajeActividad.setActividad(actividad);
-            // Guardar el puntaje en la base de datos
+            puntajeActividad.setActividad(actividades.get(i));
             puntajeActividadService.save(puntajeActividad);
         }
         String respaldo = "";
