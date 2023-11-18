@@ -65,20 +65,21 @@
                     <td scope="row" th:text="${profesor.direccion}">
                     <td scope="row" th:text="${profesor.telefono}">
                     <td class="danger">
-<!--                        <form th:action="@{'/inicio/categorias_t/' + ${profesor.id}}" method="get">-->
-<!--                            <button class="warning" type="submit">Calificacion</button>-->
-<!--                        </form>-->
-                    <form th:action="@{'/inicio/new_profe/' + ${profesor.id}}" method="get">
-                        <button class="warning" type="submit">DAtos Personales</button>
-                    </form>
+                        <form th:action="@{'/inicio/categorias_t/' + ${profesor.id}}" method="get">
+                            <button class="warning" type="submit">Calificacion</button>
+                        </form>
+                        <form th:action="@{'/inicio/new_profe/' + ${profesor.id}}" method="get">
+                            <button class="warning" type="submit">DAtos Personales</button>
+                        </form>
                     </td>
                     <td>
                         <form th:action="@{'/inicio/borrar/' + ${profesor.id}}" method="post">
                             <button class="danger" type="submit">BORRAR</button>
                         </form>
                     </td>
-
-
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </section>
