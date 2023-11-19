@@ -94,8 +94,23 @@ public class InicioController {
 
     @GetMapping("/categorias_t/{profesorId}" )
     public String listarCategorias(@PathVariable Integer profesorId, ModelMap model) {
+        List<CategoriaConTotal> categoriaConTotal = new ArrayList<>();
+        Profesor profesor = profesorService.getById(profesorId);
         List<Categoria> categorias = categoriaService.getAll();
-        model.put("lCategorias", categorias);
+
+        for (Categoria categoria : categorias) {
+            int totalPorCategoria = 0;
+            List<PuntajeActividad> puntajes = puntajeActividadService.obtenerPuntajesPorProfesorYCategoria(profesor, categoria);
+            for (PuntajeActividad puntaje : puntajes) {
+                totalPorCategoria += puntaje.getPuntaje();
+            }
+            CategoriaConTotal categoriaConTotalItem = new CategoriaConTotal();
+            categoriaConTotalItem.setCategoria(categoria);
+            categoriaConTotalItem.setTotalPorCategoria(totalPorCategoria);
+            categoriaConTotal.add(categoriaConTotalItem);
+        }
+        model.addAttribute("categoriaConTotal", categoriaConTotal);
+        model.put("lCategorias", categoriaConTotal);
         model.put("profesorId", profesorId);
         return "categorias";
     }
@@ -124,7 +139,6 @@ public class InicioController {
             for (int i = 0; i < actividades.size(); i++) {
                 ActividadConPuntaje actividadConPuntaje = new ActividadConPuntaje();
                 actividadConPuntaje.setActividad(actividades.get(i));
-                // Asegúrate de manejar correctamente los índices para evitar IndexOutOfBoundsException
                 if (i < puntajes.size()) {
                     actividadConPuntaje.setPuntajeActividad(puntajes.get(i));
                 }else{
@@ -174,8 +188,11 @@ public class InicioController {
             }
             strCategoriasSeleccionadas = respaldo;
         } else {
-            return "exito";
+
+            model.addAttribute("id", profesor.getId());
+            return buscarXdni(profesor.getId(), model);
         }
+        model.addAttribute("model", model);
         model.put("profesorId", profesorId);
         model.put("strCategoriasSeleccionadas", strCategoriasSeleccionadas);
         return "continuar";
