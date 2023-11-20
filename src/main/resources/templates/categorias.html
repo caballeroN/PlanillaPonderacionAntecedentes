@@ -54,21 +54,21 @@
                 <thead>
                 <tr>
                     <th scope="col">ID</th>
-                    <th scope="col">Letra</th>
                     <th scope="col">Titulo</th>
                     <th scope="col">Puntos Máximos</th>
+                    <th scope="col">Puntaje por Categoria</th>
                     <th scope="col">Seleccionar</th>
 
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="categoria : ${lCategorias}">
-                    <td th:text="${categoria.id}">
-                    <td scope="row" th:text="${categoria.id}">
-                    <td scope="row" th:text="${categoria.nombre}">
-                    <td scope="row" th:text="${categoria.puntuacionMaxima}">
+                <tr th:each="lista : ${lCategorias}">
+                    <td scope="row" th:text="${lista.categoria.id}"></td>
+                    <td scope="row" th:text="${lista.categoria.nombre}"></td>
+                    <td scope="row" th:text="${lista.categoria.puntuacionMaxima}"></td>
+                    <td scope="row" th:text="${lista.totalPorCategoria}"></td>
                     <td>
-                    <input type="checkbox" name="categoriasSeleccionadas" th:value="${categoria.id}">
+                    <input type="checkbox" name="categoriasSeleccionadas" th:value="${lista.categoria.id}">
                     </td>
                 </tr>
                 </tbody>

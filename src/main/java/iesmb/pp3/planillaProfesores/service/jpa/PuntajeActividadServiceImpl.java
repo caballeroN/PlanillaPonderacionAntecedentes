@@ -1,8 +1,10 @@
 package iesmb.pp3.planillaProfesores.service.jpa;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import iesmb.pp3.planillaProfesores.entity.Actividad;
 import iesmb.pp3.planillaProfesores.entity.Categoria;
 import iesmb.pp3.planillaProfesores.entity.Profesor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,5 +59,46 @@ public class PuntajeActividadServiceImpl implements IPuntajeActividadService{
 	public List<PuntajeActividad> obtenerPuntajesPorProfesorYCategoria(Profesor profesor, Categoria categoria) {
 		return puntajeActividadRepository.findByProfesorAndActividad_Categoria(profesor, categoria);
 	}
+
+
+	// Método para obtener o inicializar los puntajesActividad del profesor para una lista de actividades
+	public List<PuntajeActividad> obtenerPuntajesActividad(Profesor profesor, List<Actividad> actividades) {
+		List<PuntajeActividad> puntajesActividad = profesor.getPuntajesActividad();
+		List<Actividad> actividadesFaltantes = new ArrayList<>(actividades);
+
+		// Actualizar las actividades existentes
+		for (PuntajeActividad puntajeActividad : puntajesActividad) {
+			if (actividadesFaltantes.contains(puntajeActividad.getActividad())) {
+				actividadesFaltantes.remove(puntajeActividad.getActividad());
+			}
+		}
+
+		// Crear nuevos puntajes para las actividades faltantes
+		for (Actividad actividad : actividadesFaltantes) {
+			PuntajeActividad nuevoPuntaje = new PuntajeActividad();
+			nuevoPuntaje.setPuntaje(0); // Otra lógica si es necesario
+			nuevoPuntaje.setProfesor(profesor);
+			nuevoPuntaje.setActividad(actividad);
+			puntajesActividad.add(nuevoPuntaje);
+		}
+
+		return puntajesActividad;
+	}
+
+
+
+	// Método para obtener o inicializar los puntajesActividad del profesor para una lista de actividades
+	public PuntajeActividad obtenerPuntajeActividad(List<PuntajeActividad> puntajesActividad, Actividad actividad) {
+		for (PuntajeActividad puntajeActividad : puntajesActividad) {
+			if (puntajeActividad.getActividad().equals(actividad)) {
+				return puntajeActividad;
+			}
+		}
+		// Si no se encuentra, se crea uno nuevo (esto no debería ocurrir en condiciones normales)
+		PuntajeActividad nuevoPuntaje = new PuntajeActividad();
+		nuevoPuntaje.setPuntaje(0); // Otra lógica si es necesario
+		return nuevoPuntaje;
+	}
+
 
 }
