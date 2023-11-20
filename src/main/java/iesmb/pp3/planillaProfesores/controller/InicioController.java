@@ -62,7 +62,7 @@ public class InicioController {
             return buscarXdni(profe.getId(), model);
         }else {
             profe = new Profesor();
-            model.put("profesor", profe);
+            model.addAttribute("profesor", profe);
             return "datos_personales";
         }
     }
@@ -110,8 +110,8 @@ public class InicioController {
             categoriaConTotal.add(categoriaConTotalItem);
         }
         model.addAttribute("categoriaConTotal", categoriaConTotal);
-        model.put("lCategorias", categoriaConTotal);
-        model.put("profesorId", profesorId);
+        model.addAttribute("lCategorias", categoriaConTotal);
+        model.addAttribute("profesorId", profesorId);
         return "categorias";
     }
     @PostMapping("/categorias_p/{profesorId}")
@@ -149,12 +149,12 @@ public class InicioController {
                 actividadesConPuntajes.add(actividadConPuntaje);
             }
             strCategoriasSeleccionadas = String.join(", ", categoriasSeleccionadas);
-            model.put("nameCategoria", strNameCategoria);
-            model.put("profesorId", profesorId);
-            model.put("profesor_nombre", profesor_nombre);
-            model.put("actividadesConPuntajes", actividadesConPuntajes);
-            model.put("strCategoriasSeleccionadas", strCategoriasSeleccionadas);
-            model.put("categoriasSeleccionadas", categoriasSeleccionadas); // Agregar a modelo
+            model.addAttribute("nameCategoria", strNameCategoria);
+            model.addAttribute("profesorId", profesorId);
+            model.addAttribute("profesor_nombre", profesor_nombre);
+            model.addAttribute("actividadesConPuntajes", actividadesConPuntajes);
+            model.addAttribute("strCategoriasSeleccionadas", strCategoriasSeleccionadas);
+            model.addAttribute("categoriasSeleccionadas", categoriasSeleccionadas); // Agregar a modelo
             return "categoria";
         }
         return "error";
@@ -176,7 +176,7 @@ public class InicioController {
         // Iterar sobre los puntajes y asignar valores
         for (int i = 0; i < asignados.size(); i++) {
             PuntajeActividad puntajeActividad = puntajeActividadService.obtenerPuntajeActividad(puntajesActividad, actividades.get(i));
-            puntajeActividad.setPuntaje((asignados.get(i)).isEmpty() ? 0 : Integer.parseInt(asignados.get(i)));
+            puntajeActividad.setPuntaje((asignados.get(i)).isEmpty() ? 0 : Integer.parseInt(asignados.get(i).trim()));
             puntajeActividad.setProfesor(profesor);
             puntajeActividad.setActividad(actividades.get(i));
             puntajeActividadService.save(puntajeActividad);
@@ -193,8 +193,8 @@ public class InicioController {
             return buscarXdni(profesor.getId(), model);
         }
         model.addAttribute("model", model);
-        model.put("profesorId", profesorId);
-        model.put("strCategoriasSeleccionadas", strCategoriasSeleccionadas);
+        model.addAttribute("profesorId", profesorId);
+        model.addAttribute("strCategoriasSeleccionadas", strCategoriasSeleccionadas);
         return "continuar";
     }
 }

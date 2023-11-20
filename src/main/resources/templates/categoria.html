@@ -52,7 +52,7 @@
                         <td scope="row" th:text="${item.actividad.puntuacion}"></td>
                         <td>
                             <input type="text" th:value="${item.puntajeActividad.puntaje}" name="asignados"
-                                   onchange="calcularSumaAsignados()" placeholder="0"></td>
+                                   class="asignados-input" onchange="calcularSumaAsignados()" placeholder="0">
                     </tr>
                     </tbody>
                 </table>
@@ -71,8 +71,12 @@
 <script src="../vendor/jquery/jquery.min.js"></script>
 <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Llamar a la función después de que se cargue la página
+    calcularSumaAsignados();
+});
 function calcularSumaAsignados() {
-    const inputs = document.getElementsByName('asignados');
+    const inputs = document.getElementsByClassName('asignados-input'); // Cambiado a seleccionar por clase
     let suma = 0;
 
     for (let i = 0; i < inputs.length; i++) {
