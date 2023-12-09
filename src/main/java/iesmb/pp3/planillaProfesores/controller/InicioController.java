@@ -54,6 +54,19 @@ public class InicioController {
         return "datos_personales";
     }
 
+    @PostMapping("/buscarxdni")
+    public String buscarProfeXDNI(@RequestParam String dni, ModelMap model) {
+        Profesor profe = profesorService.getByDni(dni);
+        System.out.println("profesor " +profe);
+        if(profe != null){
+            model.addAttribute("id", profe.getId());
+            return buscarXdni(profe.getId(), model);
+        }else {
+            profe = new Profesor();
+            model.addAttribute("profesor", profe);
+            return "datos_personales";
+        }
+    }
     @PostMapping("/buscarxid")
     public String buscarProfeXId(@RequestParam Integer id, ModelMap model) {
         Profesor profe = profesorService.getById(id);
