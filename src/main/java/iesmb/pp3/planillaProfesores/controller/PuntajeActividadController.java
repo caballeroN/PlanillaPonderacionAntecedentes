@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import iesmb.pp3.planillaProfesores.entity.Profesor;
 import iesmb.pp3.planillaProfesores.entity.PuntajeActividad;
-import iesmb.pp3.planillaProfesores.service.IProfesorService;
 import iesmb.pp3.planillaProfesores.service.IPuntajeActividadService;
 import iesmb.pp3.planillaProfesores.util.ResponseUtil;
 import jakarta.validation.ConstraintViolationException;
