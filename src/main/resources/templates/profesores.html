@@ -68,6 +68,7 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
+                    <th scope="col">ID</th>
                     <th scope="col">NOMBRE</th>
                     <th scope="col">APELLIDO</th>
                     <th scope="col">DNI</th>
@@ -77,6 +78,7 @@
                 </thead>
                 <tbody>
                 <tr th:each="profesor : ${profesores}">
+                    <td scope="row" th:text="${profesor.id}">
                     <td scope="row" th:text="${profesor.nombre}">
                     <td scope="row" th:text="${profesor.apellido}">
                     <td scope="row" th:text="${profesor.documento}">
