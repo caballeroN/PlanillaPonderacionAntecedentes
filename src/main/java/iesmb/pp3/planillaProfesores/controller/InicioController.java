@@ -122,6 +122,7 @@ public class InicioController {
             categoriaConTotalItem.setTotalPorCategoria(totalPorCategoria);
             categoriaConTotal.add(categoriaConTotalItem);
         }
+        model.addAttribute("profesor", profesor);
         model.addAttribute("categoriaConTotal", categoriaConTotal);
         model.addAttribute("lCategorias", categoriaConTotal);
         model.addAttribute("profesorId", profesorId);

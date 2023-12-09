@@ -46,6 +46,25 @@
 <section>
     <div class="container">
         <div class="row align-items-center">
+            <div class="row">
+                <h3>Datos del profesor</h3>
+                <table class="table table-bordered">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>DNI</th>
+                    </tr>
+                    <tr>
+                        <td th:text="${profesor.id}"></td>
+                        <td th:text="${profesor.nombre}"></td>
+                        <td th:text="${profesor.apellido}"></td>
+                        <td th:text="${profesor.documento}"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="row align-items-center">
+
             <p> lista de Categorias </p>
             <form th:action="@{'/inicio/categorias_p/' + ${profesorId}}" method="post">
                 <input type="hidden" name="profesorId" th:value="${profesorId}" />
@@ -75,6 +94,8 @@
             </table>
                 <button type="submit">Enviar</button>
             </form>
+
+            </div>
         </div>
     </div>
 </section>
