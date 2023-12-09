@@ -73,6 +73,11 @@
                                 <input type="text" th:value="${item.puntajeActividad.puntaje}" name="asignados"
                                        class="asignados-input" onchange="calcularSumaAsignados()" placeholder="0">
                         </tr>
+                        <tr>
+                            <td colspan="1"></td>
+                            <td>Puntuación Maxima:</td>
+                            <td th:text="${categoria.puntuacionMaxima}"></td>
+                        </tr>
                         </tbody>
                     </table>
                     <div id="totalParcial" class="text-right">Total Parcial: 0</div>
