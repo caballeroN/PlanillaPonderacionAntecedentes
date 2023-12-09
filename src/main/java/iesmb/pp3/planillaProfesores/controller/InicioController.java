@@ -178,6 +178,8 @@ public class InicioController {
                 actividadesConPuntajes.add(actividadConPuntaje);
             }
             strCategoriasSeleccionadas = String.join(", ", categoriasSeleccionadas);
+            model.addAttribute("profesor", profesor);
+            model.addAttribute("categoriaId", categoriaId);
             model.addAttribute("nameCategoria", strNameCategoria);
             model.addAttribute("profesorId", profesorId);
             model.addAttribute("profesor_nombre", profesor_nombre);
