@@ -27,11 +27,21 @@ public class InicioController {
 
     @GetMapping("/profesores")
     public String metodoPrueba(ModelMap model) {
-        List<Profesor> profe = profesorService.getAll();
+        List<Profesor> profesores = profesorService.getAll();
+        List<ProfesorTotalDePuntos> listaProfesoresTotalDePuntos = new ArrayList<>();
 
-        model.addAttribute("profesores", profe);
+        for (Profesor profesor : profesores) {
+            ProfesorTotalDePuntos profesorTotalDePuntos = new ProfesorTotalDePuntos();
+            profesorTotalDePuntos.setTotalAcumulado(puntajeActividadService.obtenerTotalPuntosPorProfesor(profesor));
+            profesorTotalDePuntos.setProfesor(profesor);
+
+            listaProfesoresTotalDePuntos.add(profesorTotalDePuntos);
+        }
+
+        model.addAttribute("profesores", listaProfesoresTotalDePuntos);
         return "profesores";
     }
+
 
     @GetMapping("/xdni")
     public String buscarXdni(@RequestParam Integer id, ModelMap model) {

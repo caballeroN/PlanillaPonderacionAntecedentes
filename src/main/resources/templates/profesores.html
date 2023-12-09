@@ -74,18 +74,20 @@
                     <th scope="col">DNI</th>
                     <th scope="col">DIRECCION</th>
                     <th scope="col">TELEFONO</th>
+                    <th scope="col">PUNTOS ACUMULADOS</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="profesor : ${profesores}">
-                    <td scope="row" th:text="${profesor.id}">
-                    <td scope="row" th:text="${profesor.nombre}">
-                    <td scope="row" th:text="${profesor.apellido}">
-                    <td scope="row" th:text="${profesor.documento}">
-                    <td scope="row" th:text="${profesor.direccion}">
-                    <td scope="row" th:text="${profesor.telefono}">
+                <tr th:each="elemento : ${profesores}">
+                    <td scope="row" th:text="${elemento.profesor.id}">
+                    <td scope="row" th:text="${elemento.profesor.nombre}">
+                    <td scope="row" th:text="${elemento.profesor.apellido}">
+                    <td scope="row" th:text="${elemento.profesor.documento}">
+                    <td scope="row" th:text="${elemento.profesor.direccion}">
+                    <td scope="row" th:text="${elemento.profesor.telefono}">
+                    <td scope="row" th:text="${elemento.totalAcumulado}">
                     <td>
-                        <a th:href="@{/inicio/xdni(id=${profesor.id})}">Ver Registro</a>
+                        <a th:href="@{/inicio/xdni(id=${elemento.profesor.id})}">Ver Registro</a>
                     </td>
                 </tr>
                 </tbody>
