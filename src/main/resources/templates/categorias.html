@@ -87,8 +87,14 @@
                     <td scope="row" th:text="${lista.categoria.puntuacionMaxima}"></td>
                     <td scope="row" th:text="${lista.totalPorCategoria}"></td>
                     <td>
-                    <input type="checkbox" name="categoriasSeleccionadas" th:value="${lista.categoria.id}">
+                        <input type="checkbox" name="categoriasSeleccionadas" th:value="${lista.categoria.id}">
                     </td>
+                </tr>
+                <tr>
+                    <!-- Añade una fila adicional para mostrar el total -->
+                    <td colspan="2"></td> <!-- Colspan para ocupar las tres primeras columnas -->
+                    <td>Total:</td>
+                    <td th:text="${total_puntos}"></td>
                 </tr>
                 </tbody>
             </table>

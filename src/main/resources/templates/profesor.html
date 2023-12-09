@@ -54,6 +54,7 @@
                     <th scope="col">DNI</th>
                     <th scope="col">DIRECCION</th>
                     <th scope="col">TELEFONO</th>
+                    <th scope="col">TOTAL DE PUNTOS OBTENIDOS</th>
                     <th scope="col">EDITAR</th>
                     <th scope="col">ACCIONES</th>
                 </tr>
@@ -66,6 +67,7 @@
                     <td scope="row" th:text="${profesor.documento}">
                     <td scope="row" th:text="${profesor.direccion}">
                     <td scope="row" th:text="${profesor.telefono}">
+                    <td scope="row" th:text="${total_puntos}">
                     <td class="danger">
                         <form th:action="@{'/inicio/categorias_t/' + ${profesor.id}}" method="get">
                             <button class="warning" type="submit">Calificacion</button>

@@ -28,6 +28,7 @@ public class InicioController {
     @GetMapping("/profesores")
     public String metodoPrueba(ModelMap model) {
         List<Profesor> profe = profesorService.getAll();
+
         model.addAttribute("profesores", profe);
         return "profesores";
     }
@@ -35,6 +36,8 @@ public class InicioController {
     @GetMapping("/xdni")
     public String buscarXdni(@RequestParam Integer id, ModelMap model) {
         Profesor profe = profesorService.getById(id);
+        int total = puntajeActividadService.obtenerTotalPuntosPorProfesor(profe);
+        model.addAttribute("total_puntos", total);
         model.addAttribute("profesor", profe);
         return "profesor";
     }
@@ -122,6 +125,8 @@ public class InicioController {
             categoriaConTotalItem.setTotalPorCategoria(totalPorCategoria);
             categoriaConTotal.add(categoriaConTotalItem);
         }
+        int total = puntajeActividadService.obtenerTotalPuntosPorProfesor(profesor);
+        model.addAttribute("total_puntos", total);
         model.addAttribute("profesor", profesor);
         model.addAttribute("categoriaConTotal", categoriaConTotal);
         model.addAttribute("lCategorias", categoriaConTotal);
