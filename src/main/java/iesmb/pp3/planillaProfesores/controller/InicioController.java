@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @Controller
-@RequestMapping("/inicio")
+@RequestMapping("")
 public class InicioController {
 
     @Autowired
@@ -25,16 +25,29 @@ public class InicioController {
     @Autowired
     PuntajeActividadServiceImpl puntajeActividadService;
 
-    @GetMapping("/profesores")
-    public String metodoPrueba(ModelMap model) {
-        List<Profesor> profe = profesorService.getAll();
-        model.addAttribute("profesores", profe);
-        return "profesores";
+    @GetMapping("")
+    public String cargarInicio(ModelMap model) {
+        List<Profesor> profesores = profesorService.getAll();
+        List<ProfesorTotalDePuntos> listaProfesoresTotalDePuntos = new ArrayList<>();
+
+        for (Profesor profesor : profesores) {
+            ProfesorTotalDePuntos profesorTotalDePuntos = new ProfesorTotalDePuntos();
+            profesorTotalDePuntos.setTotalAcumulado(puntajeActividadService.obtenerTotalPuntosPorProfesor(profesor));
+            profesorTotalDePuntos.setProfesor(profesor);
+
+            listaProfesoresTotalDePuntos.add(profesorTotalDePuntos);
+        }
+
+        model.addAttribute("profesores", listaProfesoresTotalDePuntos);
+        return "index";
     }
+
 
     @GetMapping("/xdni")
     public String buscarXdni(@RequestParam Integer id, ModelMap model) {
         Profesor profe = profesorService.getById(id);
+        int total = puntajeActividadService.obtenerTotalPuntosPorProfesor(profe);
+        model.addAttribute("total_puntos", total);
         model.addAttribute("profesor", profe);
         return "profesor";
     }
@@ -54,6 +67,19 @@ public class InicioController {
         return "datos_personales";
     }
 
+    @PostMapping("/buscarxdni")
+    public String buscarProfeXDNI(@RequestParam String dni, ModelMap model) {
+        Profesor profe = profesorService.getByDni(dni);
+        System.out.println("profesor " +profe);
+        if(profe != null){
+            model.addAttribute("id", profe.getId());
+            return buscarXdni(profe.getId(), model);
+        }else {
+            profe = new Profesor();
+            model.addAttribute("profesor", profe);
+            return "datos_personales";
+        }
+    }
     @PostMapping("/buscarxid")
     public String buscarProfeXId(@RequestParam Integer id, ModelMap model) {
         Profesor profe = profesorService.getById(id);
@@ -109,6 +135,9 @@ public class InicioController {
             categoriaConTotalItem.setTotalPorCategoria(totalPorCategoria);
             categoriaConTotal.add(categoriaConTotalItem);
         }
+        int total = puntajeActividadService.obtenerTotalPuntosPorProfesor(profesor);
+        model.addAttribute("total_puntos", total);
+        model.addAttribute("profesor", profesor);
         model.addAttribute("categoriaConTotal", categoriaConTotal);
         model.addAttribute("lCategorias", categoriaConTotal);
         model.addAttribute("profesorId", profesorId);
@@ -149,6 +178,9 @@ public class InicioController {
                 actividadesConPuntajes.add(actividadConPuntaje);
             }
             strCategoriasSeleccionadas = String.join(", ", categoriasSeleccionadas);
+            model.addAttribute("profesor", profesor);
+            model.addAttribute("categoriaId", categoriaId);
+            model.addAttribute("categoria", categoria);
             model.addAttribute("nameCategoria", strNameCategoria);
             model.addAttribute("profesorId", profesorId);
             model.addAttribute("profesor_nombre", profesor_nombre);

@@ -9,6 +9,7 @@ public interface IProfesorService {
 	public List<Profesor> getAll();
 
 	public Profesor getById (Integer id);
+	public Profesor getByDni (String dni);
 
 	public Profesor save (Profesor profesor);
 
