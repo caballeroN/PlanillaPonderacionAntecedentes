@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @Controller
-@RequestMapping("/inicio")
+@RequestMapping("")
 public class InicioController {
 
     @Autowired
@@ -25,8 +25,8 @@ public class InicioController {
     @Autowired
     PuntajeActividadServiceImpl puntajeActividadService;
 
-    @GetMapping("/profesores")
-    public String metodoPrueba(ModelMap model) {
+    @GetMapping("")
+    public String cargarInicio(ModelMap model) {
         List<Profesor> profesores = profesorService.getAll();
         List<ProfesorTotalDePuntos> listaProfesoresTotalDePuntos = new ArrayList<>();
 
@@ -39,7 +39,7 @@ public class InicioController {
         }
 
         model.addAttribute("profesores", listaProfesoresTotalDePuntos);
-        return "profesores";
+        return "index";
     }
 
 
