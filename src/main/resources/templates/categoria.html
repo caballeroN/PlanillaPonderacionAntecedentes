@@ -50,7 +50,7 @@
                 <h5 th:text="'Categoría Nombre: ' + ${nameCategoria}"></h5>
                 <h5> Lista de Actividades: </h5>
 
-                <form th:action="@{'/categoria_t/' + ${profesorId}}" method="post">
+                <form th:action="@{'/inicio/categoria_t/' + ${profesorId}}" method="post">
                     <input type="hidden" name="profesorId" th:value="${profesorId}"/>
                     <input type="hidden" name="strCategoriasSeleccionadas"
                            th:value="${strCategoriasSeleccionadas}"/>
