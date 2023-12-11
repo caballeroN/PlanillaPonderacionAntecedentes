@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 @Controller
@@ -46,8 +47,10 @@ public class InicioController {
     @GetMapping("/xdni")
     public String buscarXdni(@RequestParam Integer id, ModelMap model) {
         Profesor profe = profesorService.getById(id);
-        int total = puntajeActividadService.obtenerTotalPuntosPorProfesor(profe);
-        model.addAttribute("total_puntos", total);
+        double total = puntajeActividadService.obtenerTotalPuntosPorProfesor(profe);
+        DecimalFormat formato = new DecimalFormat("#,##0.###");
+        String totalPorCategoriaStr = (total != 0) ? formato.format(total) : "0";
+        model.addAttribute("total_puntos", totalPorCategoriaStr);
         model.addAttribute("profesor", profe);
         return "profesor";
     }
@@ -125,17 +128,21 @@ public class InicioController {
         List<Categoria> categorias = categoriaService.getAll();
 
         for (Categoria categoria : categorias) {
-            int totalPorCategoria = 0;
+            double totalPorCategoria = 0;
             List<PuntajeActividad> puntajes = puntajeActividadService.obtenerPuntajesPorProfesorYCategoria(profesor, categoria);
             for (PuntajeActividad puntaje : puntajes) {
                 totalPorCategoria += puntaje.getPuntaje();
             }
+
+            DecimalFormat formato = new DecimalFormat("#,##0.###");
+            String totalPorCategoriaStr = (totalPorCategoria != 0) ? formato.format(totalPorCategoria) : "0";
+
             CategoriaConTotal categoriaConTotalItem = new CategoriaConTotal();
             categoriaConTotalItem.setCategoria(categoria);
-            categoriaConTotalItem.setTotalPorCategoria(totalPorCategoria);
+            categoriaConTotalItem.setTotalPorCategoria(totalPorCategoriaStr);
             categoriaConTotal.add(categoriaConTotalItem);
         }
-        int total = puntajeActividadService.obtenerTotalPuntosPorProfesor(profesor);
+        double total = puntajeActividadService.obtenerTotalPuntosPorProfesor(profesor);
         model.addAttribute("total_puntos", total);
         model.addAttribute("profesor", profesor);
         model.addAttribute("categoriaConTotal", categoriaConTotal);
@@ -191,24 +198,28 @@ public class InicioController {
         }
         return "error";
     }
+
     @PostMapping("/categoria_t/{profesorId}")
     public String iterarCategoria(@PathVariable Integer profesorId,
                                   @RequestParam(name = "strCategoriasSeleccionadas") String strCategoriasSeleccionadas,
-                                  @RequestParam(name = "asignados") List<String> asignados, ModelMap model) {
-        int idCategoria = Integer.parseInt(strCategoriasSeleccionadas.split(",")[0].trim());
-        Profesor profesor = profesorService.getById(profesorId);
-        Categoria categoria = categoriaService.getById(idCategoria);
+                                  @RequestParam(name = "asignados") List<String> asignados,
+                                  @RequestParam(name = "totalValidado") String totalValidado, ModelMap model){
 
-        // Obtener las actividades de la categoría seleccionada
-        List<Actividad> actividades = categoria.getActividades();
+        System.out.println("este es el validado " + totalValidado);
+            int idCategoria = Integer.parseInt(strCategoriasSeleccionadas.split(",")[0].trim());
+            Profesor profesor = profesorService.getById(profesorId);
+            Categoria categoria = categoriaService.getById(idCategoria);
 
-        // Obtener o inicializar los puntajesActividad del profesor para esta categoría
-        List<PuntajeActividad> puntajesActividad = puntajeActividadService.obtenerPuntajesActividad(profesor, actividades);
+            // Obtener las actividades de la categoría seleccionada
+            List<Actividad> actividades = categoria.getActividades();
+
+            // Obtener o inicializar los puntajesActividad del profesor para esta categoría
+            List<PuntajeActividad> puntajesActividad = puntajeActividadService.obtenerPuntajesActividad(profesor, actividades);
 
         // Iterar sobre los puntajes y asignar valores
         for (int i = 0; i < asignados.size(); i++) {
             PuntajeActividad puntajeActividad = puntajeActividadService.obtenerPuntajeActividad(puntajesActividad, actividades.get(i));
-            puntajeActividad.setPuntaje((asignados.get(i)).isEmpty() ? 0 : Integer.parseInt(asignados.get(i).trim()));
+            puntajeActividad.setPuntaje((asignados.get(i)).isEmpty() ? 0 : Double.parseDouble(asignados.get(i).trim()));
             puntajeActividad.setProfesor(profesor);
             puntajeActividad.setActividad(actividades.get(i));
             puntajeActividadService.save(puntajeActividad);

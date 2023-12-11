@@ -17,13 +17,13 @@ public class PuntajeActividad {
     @ManyToOne
     private Actividad actividad;
 
-    private int puntaje;
+    private double puntaje;
 
     public PuntajeActividad() {
     	
     }
 
-    public PuntajeActividad(Profesor profesor, Actividad actividad, int puntaje) {
+    public PuntajeActividad(Profesor profesor, Actividad actividad, double puntaje) {
         this.profesor = profesor;
         this.actividad = actividad;
         this.puntaje = puntaje;
@@ -53,11 +53,11 @@ public class PuntajeActividad {
         this.actividad = actividad;
     }
 
-    public int getPuntaje() {
+    public double getPuntaje() {
         return puntaje;
     }
 
-    public void setPuntaje(int puntaje) {
+    public void setPuntaje(double puntaje) {
         this.puntaje = puntaje;
     }
 }

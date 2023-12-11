@@ -2,12 +2,12 @@ package iesmb.pp3.planillaProfesores.entity;
 
 public class CategoriaConTotal {
     private Categoria  categoria;
-    private int totalPorCategoria;
+    private String totalPorCategoria;
 
     public CategoriaConTotal() {
     }
 
-    public CategoriaConTotal(Categoria categoria, int totalPorCategoria) {
+    public CategoriaConTotal(Categoria categoria, String totalPorCategoria) {
         this.categoria = categoria;
         this.totalPorCategoria = totalPorCategoria;
     }
@@ -20,11 +20,11 @@ public class CategoriaConTotal {
         this.categoria = categoria;
     }
 
-    public int getTotalPorCategoria() {
+    public String getTotalPorCategoria() {
         return totalPorCategoria;
     }
 
-    public void setTotalPorCategoria(int totalPorCategoria) {
+    public void setTotalPorCategoria(String totalPorCategoria) {
         this.totalPorCategoria = totalPorCategoria;
     }
 }
