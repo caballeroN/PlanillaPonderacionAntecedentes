@@ -13,8 +13,8 @@
     <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i"
           rel="stylesheet">
     <!-- Custom styles for this template -->
-    <link href="../css/one-page-wonder.min.css" rel="stylesheet">
-    <script src="../static/js/index.js"></script>
+    <link href="/css/one-page-wonder.min.css" rel="stylesheet">
+    <script src="/static/js/index.js"></script>
 
 </head>
 <body>
@@ -25,40 +25,65 @@
 
 <!--</header>-->
 <section>
-    <p> lista de Actividades por Categoria </p>
     <div class="container">
         <div class="row align-items-center">
-            <form th:action="@{'/inicio/categoria_t/' + ${profesorId}}" method="post">
-                <input type="hidden" name="profesorId" th:value="${profesorId}"/>
-                <input type="hidden" name="strCategoriasSeleccionadas" th:value="${strCategoriasSeleccionadas}"/>
-
-                <h7 th:text="${profesorId}">ID Profesor</h7>
-                <h6 th:text="${profesor_nombre}"> </h6>
-                <h6 th:text="${nameCategoria}"></h6>
-
-                <table class="table table-hover">
-                    <thead>
+            <div class="row">
+                <h5>Datos del profesor</h5>
+                <table class="table table-bordered">
                     <tr>
-                        <th scope="col">ID actividad</th>
-                        <th scope="col">Nombre Actividad</th>
-                        <th scope="col">Pts.</th>
-                        <th scope="col">Puntos Asignados</th>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>DNI</th>
                     </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="item : ${actividadesConPuntajes}">
-                        <td scope="row" th:text="${item.actividad.id}"></td>
-                        <td scope="row" th:text="${item.actividad.nombre}"></td>
-                        <td scope="row" th:text="${item.actividad.puntuacion}"></td>
-                        <td>
-                            <input type="text" th:value="${item.puntajeActividad.puntaje}" name="asignados"
-                                   class="asignados-input" onchange="calcularSumaAsignados()" placeholder="0">
+                    <tr>
+                        <td th:text="${profesor.id}"></td>
+                        <td th:text="${profesor.nombre}"></td>
+                        <td th:text="${profesor.apellido}"></td>
+                        <td th:text="${profesor.documento}"></td>
                     </tr>
-                    </tbody>
                 </table>
-                <div id="totalParcial" class="text-right">Total Parcial: 0</div>
-                <button type="submit">Enviar</button>
-            </form>
+            </div>
+            <br>
+            <div>
+                <h5 th:text="'Categoría ID: ' + ${categoriaId}"></h5>
+                <h5 th:text="'Categoría Nombre: ' + ${nameCategoria}"></h5>
+                <h5> Lista de Actividades: </h5>
+
+                <form th:action="@{'/inicio/categoria_t/' + ${profesorId}}" method="post">
+                    <input type="hidden" name="profesorId" th:value="${profesorId}"/>
+                    <input type="hidden" name="strCategoriasSeleccionadas"
+                           th:value="${strCategoriasSeleccionadas}"/>
+
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID actividad</th>
+                            <th scope="col">Nombre Actividad</th>
+                            <th scope="col">Pts.</th>
+                            <th scope="col">Puntos Asignados</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="item : ${actividadesConPuntajes}">
+                            <td scope="row" th:text="${item.actividad.id}"></td>
+                            <td scope="row" th:text="${item.actividad.nombre}"></td>
+                            <td scope="row" th:text="${item.actividad.puntuacion}"></td>
+                            <td>
+                                <input type="text" th:value="${item.puntajeActividad.puntaje}" name="asignados"
+                                       class="asignados-input" onchange="calcularSumaAsignados()" placeholder="0">
+                        </tr>
+                        <tr>
+                            <td colspan="1"></td>
+                            <td>Puntuación Maxima:</td>
+                            <td th:text="${categoria.puntuacionMaxima}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div id="totalParcial" class="text-right">Total Parcial: 0</div>
+                    <button type="submit">Enviar</button>
+                </form>
+            </div>
         </div>
     </div>
 </section>
@@ -68,8 +93,8 @@
     </div>
 </footer>
 <!-- Bootstrap core JavaScript -->
-<script src="../vendor/jquery/jquery.min.js"></script>
-<script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/vendor/jquery/jquery.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     // Llamar a la función después de que se cargue la página

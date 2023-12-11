@@ -99,6 +99,16 @@ public class PuntajeActividadServiceImpl implements IPuntajeActividadService{
 		nuevoPuntaje.setPuntaje(0); // Otra lógica si es necesario
 		return nuevoPuntaje;
 	}
+	public int obtenerTotalPuntosPorProfesor(Profesor profesor) {
+		List<PuntajeActividad> puntajesPorProfesor = puntajeActividadRepository.findByProfesor(profesor);
 
+		int totalPuntos = 0;
+
+		for (PuntajeActividad puntaje : puntajesPorProfesor) {
+			totalPuntos += puntaje.getPuntaje();
+		}
+
+		return totalPuntos;
+	}
 
 }

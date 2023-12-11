@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import iesmb.pp3.planillaProfesores.entity.Profesor;
 import iesmb.pp3.planillaProfesores.service.IProfesorService;
 import iesmb.pp3.planillaProfesores.util.ResponseUtil;

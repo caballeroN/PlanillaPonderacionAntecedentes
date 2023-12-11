@@ -29,6 +29,11 @@ public class ProfesorServiceImpl implements IProfesorService {
 	}
 
 	@Override
+	public Profesor getByDni(String dni) {
+		Profesor profesor = repo.findByDocumento(dni);
+		return profesor != null ? profesor : null;	}
+
+	@Override
 	public Profesor save(Profesor profesor){
 		
 		return repo.save(profesor);
