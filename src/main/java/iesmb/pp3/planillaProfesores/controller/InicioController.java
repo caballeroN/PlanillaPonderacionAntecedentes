@@ -36,7 +36,7 @@ public class InicioController {
 
         for (Profesor profesor : profesores) {
             ProfesorTotalDePuntos profesorTotalDePuntos = new ProfesorTotalDePuntos();
-            profesorTotalDePuntos.setTotalAcumulado(puntajeActividadService.obtenerTotalPuntosPorProfesor(profesor));
+            profesorTotalDePuntos.setTotalAcumulado(puntajeXCategoriaValidadoService.obtenerTotalPuntosPorProfesor(profesor));
             profesorTotalDePuntos.setProfesor(profesor);
 
             listaProfesoresTotalDePuntos.add(profesorTotalDePuntos);
@@ -50,7 +50,7 @@ public class InicioController {
     @GetMapping("/xdni")
     public String buscarXdni(@RequestParam Integer id, ModelMap model) {
         Profesor profe = profesorService.getById(id);
-        double total = puntajeActividadService.obtenerTotalPuntosPorProfesor(profe);
+        double total = puntajeXCategoriaValidadoService.obtenerTotalPuntosPorProfesor(profe);
         DecimalFormat formato = new DecimalFormat("#,##0.###");
         String totalPorCategoriaStr = (total != 0) ? formato.format(total) : "0";
         model.addAttribute("total_puntos", totalPorCategoriaStr);
