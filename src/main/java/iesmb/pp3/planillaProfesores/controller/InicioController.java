@@ -4,6 +4,7 @@ import iesmb.pp3.planillaProfesores.entity.*;
 import iesmb.pp3.planillaProfesores.service.IActividadService;
 import iesmb.pp3.planillaProfesores.service.ICategoriaService;
 import iesmb.pp3.planillaProfesores.service.IProfesorService;
+import iesmb.pp3.planillaProfesores.service.IPuntajeXCategoriaValidadoService;
 import iesmb.pp3.planillaProfesores.service.jpa.PuntajeActividadServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,8 @@ public class InicioController {
     IActividadService actividadService;
     @Autowired
     PuntajeActividadServiceImpl puntajeActividadService;
+    @Autowired
+    IPuntajeXCategoriaValidadoService puntajeXCategoriaValidadoService;
 
     @GetMapping("")
     public String cargarInicio(ModelMap model) {
@@ -203,18 +206,37 @@ public class InicioController {
     public String iterarCategoria(@PathVariable Integer profesorId,
                                   @RequestParam(name = "strCategoriasSeleccionadas") String strCategoriasSeleccionadas,
                                   @RequestParam(name = "asignados") List<String> asignados,
-                                  @RequestParam(name = "totalValidado") String totalValidado, ModelMap model){
+                                  @RequestParam(name = "totalValidado") String totalValidado, ModelMap model) {
 
         System.out.println("este es el validado " + totalValidado);
-            int idCategoria = Integer.parseInt(strCategoriasSeleccionadas.split(",")[0].trim());
-            Profesor profesor = profesorService.getById(profesorId);
-            Categoria categoria = categoriaService.getById(idCategoria);
+        PuntajeXCategoriaValidado puntajeXCategoriaValidado = new PuntajeXCategoriaValidado();
 
-            // Obtener las actividades de la categoría seleccionada
-            List<Actividad> actividades = categoria.getActividades();
+        int idCategoria = Integer.parseInt(strCategoriasSeleccionadas.split(",")[0].trim());
+        Profesor profesor = profesorService.getById(profesorId);
+        Categoria categoria = categoriaService.getById(idCategoria);
 
-            // Obtener o inicializar los puntajesActividad del profesor para esta categoría
-            List<PuntajeActividad> puntajesActividad = puntajeActividadService.obtenerPuntajesActividad(profesor, actividades);
+        // Verificar si ya existe un registro para esa combinación de profesor y categoría
+        PuntajeXCategoriaValidado existingRecord = puntajeXCategoriaValidadoService.getByProfesorAndCategoria(profesor, categoria);
+
+        if (existingRecord != null) {
+            // Actualizar el registro existente
+            existingRecord.setPuntajeValidado(Double.parseDouble(totalValidado));
+            puntajeXCategoriaValidadoService.save(existingRecord);
+        } else {
+            // Crear un nuevo registro
+            PuntajeXCategoriaValidado nuevoRegistro = new PuntajeXCategoriaValidado();
+            nuevoRegistro.setPuntajeValidado(Double.parseDouble(totalValidado));
+            nuevoRegistro.setCategoria(categoria);
+            nuevoRegistro.setProfesor(profesor);
+            puntajeXCategoriaValidadoService.save(nuevoRegistro);
+        }
+
+
+        // Obtener las actividades de la categoría seleccionada
+        List<Actividad> actividades = categoria.getActividades();
+
+        // Obtener o inicializar los puntajesActividad del profesor para esta categoría
+        List<PuntajeActividad> puntajesActividad = puntajeActividadService.obtenerPuntajesActividad(profesor, actividades);
 
         // Iterar sobre los puntajes y asignar valores
         for (int i = 0; i < asignados.size(); i++) {
