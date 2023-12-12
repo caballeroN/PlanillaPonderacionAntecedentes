@@ -44,6 +44,18 @@ public class PuntajeXCategoriaValidadoImpl implements IPuntajeXCategoriaValidado
 
     }
 
+    @Override
+    public double obtenerTotalPuntosPorProfesor(Profesor profesor) {
+        List<PuntajeXCategoriaValidado> puntajesValidados = puntajeXCategoriaValidadoRepository.getByProfesor(profesor);
+
+        double totalPuntos = 0.0;
+
+        for (PuntajeXCategoriaValidado puntajeValidado : puntajesValidados) {
+            totalPuntos += puntajeValidado.getPuntajeValidado();
+        }
+
+        return totalPuntos;    }
+
 
     @Override
     public PuntajeXCategoriaValidado getByProfesorAndCategoria(Profesor profesor, Categoria categoria) {

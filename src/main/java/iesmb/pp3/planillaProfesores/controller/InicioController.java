@@ -131,11 +131,8 @@ public class InicioController {
         List<Categoria> categorias = categoriaService.getAll();
 
         for (Categoria categoria : categorias) {
-            double totalPorCategoria = 0;
-            List<PuntajeActividad> puntajes = puntajeActividadService.obtenerPuntajesPorProfesorYCategoria(profesor, categoria);
-            for (PuntajeActividad puntaje : puntajes) {
-                totalPorCategoria += puntaje.getPuntaje();
-            }
+            PuntajeXCategoriaValidado puntajeXCategoriaValidado = puntajeXCategoriaValidadoService.getByProfesorAndCategoria(profesor, categoria);
+            double totalPorCategoria = (puntajeXCategoriaValidado != null) ? puntajeXCategoriaValidado.getPuntajeValidado() : 0;
 
             DecimalFormat formato = new DecimalFormat("#,##0.###");
             String totalPorCategoriaStr = (totalPorCategoria != 0) ? formato.format(totalPorCategoria) : "0";
@@ -145,7 +142,8 @@ public class InicioController {
             categoriaConTotalItem.setTotalPorCategoria(totalPorCategoriaStr);
             categoriaConTotal.add(categoriaConTotalItem);
         }
-        double total = puntajeActividadService.obtenerTotalPuntosPorProfesor(profesor);
+
+        double total = puntajeXCategoriaValidadoService.obtenerTotalPuntosPorProfesor(profesor);
         model.addAttribute("total_puntos", total);
         model.addAttribute("profesor", profesor);
         model.addAttribute("categoriaConTotal", categoriaConTotal);
@@ -209,7 +207,6 @@ public class InicioController {
                                   @RequestParam(name = "totalValidado") String totalValidado, ModelMap model) {
 
         System.out.println("este es el validado " + totalValidado);
-        PuntajeXCategoriaValidado puntajeXCategoriaValidado = new PuntajeXCategoriaValidado();
 
         int idCategoria = Integer.parseInt(strCategoriasSeleccionadas.split(",")[0].trim());
         Profesor profesor = profesorService.getById(profesorId);

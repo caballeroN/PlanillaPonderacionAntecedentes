@@ -17,11 +17,15 @@ public interface IPuntajeXCategoriaValidadoService {
 
     public boolean delete(Integer id);
 
-
+    double obtenerTotalPuntosPorProfesor(Profesor profesor);
 
     public PuntajeXCategoriaValidado getByProfesorAndCategoria(Profesor profesor, Categoria categoria);
 
     boolean exists(Integer id);
+    /*
+    *   PuntajeXCategoriaValidado getByProfesorAndCategoria(Profesor profesor, Categoria categoria);
+
+    * */
 
 }
 
