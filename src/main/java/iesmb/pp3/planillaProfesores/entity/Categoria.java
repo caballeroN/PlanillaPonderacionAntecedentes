@@ -20,14 +20,19 @@ public class Categoria {
     @OneToMany(mappedBy = "categoria")
     private List<Actividad> actividades;
 
+    @OneToMany(mappedBy = "categoria")
+    private List<PuntajeXCategoriaValidado> puntajesValidados;
+
     public Categoria() {
         actividades = new ArrayList<>();
+        puntajesValidados = new ArrayList<>();
     }
 
     public Categoria(String nombre, int puntuacionMaxima) {
         this.nombre = nombre;
         this.puntuacionMaxima = puntuacionMaxima;
         actividades = new ArrayList<>();
+        puntajesValidados = new ArrayList<>();
     }
 
     
@@ -61,5 +66,13 @@ public class Categoria {
 
     public void setActividades(List<Actividad> actividades) {
         this.actividades = actividades;
+    }
+
+    public List<PuntajeXCategoriaValidado> getPuntajesValidados() {
+        return puntajesValidados;
+    }
+
+    public void setPuntajesValidados(List<PuntajeXCategoriaValidado> puntajesValidados) {
+        this.puntajesValidados = puntajesValidados;
     }
 }

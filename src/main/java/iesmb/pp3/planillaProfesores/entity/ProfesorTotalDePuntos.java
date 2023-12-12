@@ -2,12 +2,12 @@ package iesmb.pp3.planillaProfesores.entity;
 
 public class ProfesorTotalDePuntos {
     private Profesor profesor;
-    private int totalAcumulado;
+    private double totalAcumulado;
 
     public ProfesorTotalDePuntos() {
     }
 
-    public ProfesorTotalDePuntos(Profesor profesor, int totalAcumulado) {
+    public ProfesorTotalDePuntos(Profesor profesor, double totalAcumulado) {
         this.profesor = profesor;
         this.totalAcumulado = totalAcumulado;
     }
@@ -20,11 +20,11 @@ public class ProfesorTotalDePuntos {
         this.profesor = profesor;
     }
 
-    public int getTotalAcumulado() {
+    public double getTotalAcumulado() {
         return totalAcumulado;
     }
 
-    public void setTotalAcumulado(int totalAcumulado) {
+    public void setTotalAcumulado(double totalAcumulado) {
         this.totalAcumulado = totalAcumulado;
     }
 }

@@ -14,6 +14,8 @@
           rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="/css/one-page-wonder.min.css" rel="stylesheet">
+    <link href="/css/styles.css" rel="stylesheet">
+
     <script src="/static/js/index.js"></script>
 
 </head>
@@ -50,7 +52,7 @@
                 <h5 th:text="'Categoría Nombre: ' + ${nameCategoria}"></h5>
                 <h5> Lista de Actividades: </h5>
 
-                <form th:action="@{'/inicio/categoria_t/' + ${profesorId}}" method="post">
+                <form th:action="@{'/categoria_t/' + ${profesorId}}" method="post">
                     <input type="hidden" name="profesorId" th:value="${profesorId}"/>
                     <input type="hidden" name="strCategoriasSeleccionadas"
                            th:value="${strCategoriasSeleccionadas}"/>
@@ -68,19 +70,35 @@
                         <tr th:each="item : ${actividadesConPuntajes}">
                             <td scope="row" th:text="${item.actividad.id}"></td>
                             <td scope="row" th:text="${item.actividad.nombre}"></td>
-                            <td scope="row" th:text="${item.actividad.puntuacion}"></td>
+                            <td scope="row" class="puntosMaximos" th:text="${item.actividad.puntuacion}"></td>
                             <td>
                                 <input type="text" th:value="${item.puntajeActividad.puntaje}" name="asignados"
-                                       class="asignados-input" onchange="calcularSumaAsignados()" placeholder="0">
+                                       class="asignados-input" onchange="calcularSumaAsignados();"
+                                       placeholder="0" id="lastInput"
+                                       data-previous-value="${item.puntajeActividad.puntaje}" onclick="borrarContenido(this)">
+                            </td>
+
                         </tr>
                         <tr>
                             <td colspan="1"></td>
-                            <td>Puntuación Maxima:</td>
-                            <td th:text="${categoria.puntuacionMaxima}"></td>
+                            <td class="align-right bold-text">Puntuación Maxima:</td>
+                            <td id="ptsMaximoXCategoria" th:text="${categoria.puntuacionMaxima}"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"></td>
+                            <td id="totalParcial" class="text-right">Total Parcial: 0</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"></td>
+                            <td>Total:</td>
+                            <td>
+                                <input type="text" id="totalValidado" name="totalValidado" class="text-right" placeholder="Total Validado: 0" pattern="[0-9]+([\.,][0-9]+)?">
+                            </td>
                         </tr>
                         </tbody>
                     </table>
-                    <div id="totalParcial" class="text-right">Total Parcial: 0</div>
+
+
                     <button type="submit">Enviar</button>
                 </form>
             </div>
@@ -96,29 +114,47 @@
 <script src="/vendor/jquery/jquery.min.js"></script>
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    // Llamar a la función después de que se cargue la página
-    calcularSumaAsignados();
-});
-function calcularSumaAsignados() {
-    const inputs = document.getElementsByClassName('asignados-input'); // Cambiado a seleccionar por clase
-    let suma = 0;
+    function borrarContenido(input) {
+        input.value = "";
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+        // Llamar a la función después de que se cargue la página
+        calcularSumaAsignados();
+    });
 
-    for (let i = 0; i < inputs.length; i++) {
-        const inputValue = inputs[i].value;
-        const numericValue = parseFloat(inputValue); // Convertir el valor a número
+    function calcularSumaAsignados() {
+        const inputs = document.getElementsByClassName('asignados-input'); // Cambiado a seleccionar por clase
+        let suma = 0;
+        let puntosMaximos = 0;
 
-        if (!isNaN(numericValue)) { // Verificar si es un número válido
-            suma += numericValue;
+        // Obtener el valor de puntosMaximos
+        const puntosMaximosElement = document.getElementsByClassName('puntosMaximos');
+
+        for (let i = 0; i < inputs.length; i++) {
+            const inputValue = inputs[i].value;
+            const numericValue = parseFloat(inputValue); // Convertir el valor a número
+
+            if (!isNaN(numericValue)) { // Verificar si es un número válido
+                suma += numericValue;
+                const pts = puntosMaximosElement[i].textContent.valueOf();
+            }
+        }
+
+        // Actualizar el elemento en la página con la suma
+        document.getElementById('totalParcial').textContent = 'Total Parcial: ' + suma;
+
+        const totalValidadoInput = document.getElementById('totalValidado');
+        const ptsMaximoXCategoria = document.getElementById('ptsMaximoXCategoria').textContent;
+
+        if (suma > ptsMaximoXCategoria) {
+            alert("El total de puntos para esta categoria sera el maximo");
+            totalValidadoInput.value = ptsMaximoXCategoria;
+        } else {
+            totalValidadoInput.value = suma;
         }
     }
-
-    // Actualizar el elemento en la página con la suma
-    document.getElementById('totalParcial').textContent = 'Total Parcial: ' + suma;
-}
-
-
-
 </script>
+
+
 </body>
 </html>

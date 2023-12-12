@@ -23,8 +23,12 @@ public class Profesor {
     @OneToMany(mappedBy = "profesor")
     private List<PuntajeActividad> puntajesActividad;
 
+    @OneToMany(mappedBy = "profesor")
+    private List<PuntajeXCategoriaValidado> puntajesValidados;
+
     public Profesor() {
         puntajesActividad = new ArrayList<>();
+        puntajesValidados = new ArrayList<>();
     }
 
     public Profesor(String documento, String nombre, String apellido, String telefono, String direccion) {
@@ -34,6 +38,7 @@ public class Profesor {
         this.telefono = telefono;
         this.direccion = direccion;
         puntajesActividad = new ArrayList<>();
+        puntajesValidados = new ArrayList<>();
     }
 
 
@@ -101,5 +106,14 @@ public class Profesor {
     public void removePuntajeActividad(PuntajeActividad puntajeActividad) {
         puntajesActividad.remove(puntajeActividad);
         puntajeActividad.setProfesor(null);
+    }
+
+
+    public List<PuntajeXCategoriaValidado> getPuntajesValidados() {
+        return puntajesValidados;
+    }
+
+    public void setPuntajesValidados(List<PuntajeXCategoriaValidado> puntajesValidados) {
+        this.puntajesValidados = puntajesValidados;
     }
 }

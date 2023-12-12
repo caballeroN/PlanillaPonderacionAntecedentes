@@ -26,7 +26,7 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/inicio/new_profe">AGREGAR UN PROFE</a>
+                    <a class="nav-link" href="/new_profe">AGREGAR UN PROFE</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/editar">EDITAR CALIFICACION</a>
@@ -66,7 +66,7 @@
             <div class="row align-items-center">
 
             <p> lista de Categorias </p>
-            <form th:action="@{'/inicio/categorias_p/' + ${profesorId}}" method="post">
+            <form th:action="@{'/categorias_p/' + ${profesorId}}" method="post">
                 <input type="hidden" name="profesorId" th:value="${profesorId}" />
 
                 <table class="table table-hover">
@@ -86,8 +86,10 @@
                     <td scope="row" th:text="${lista.categoria.nombre}"></td>
                     <td scope="row" th:text="${lista.categoria.puntuacionMaxima}"></td>
                     <td scope="row" th:text="${lista.totalPorCategoria}"></td>
+
+
                     <td>
-                        <input type="checkbox" name="categoriasSeleccionadas" th:value="${lista.categoria.id}">
+                        <input type="checkbox" style="transform: scale(2.0)" name="categoriasSeleccionadas" th:value="${lista.categoria.id}">
                     </td>
                 </tr>
                 <tr>
@@ -113,4 +115,5 @@
 <script src="/vendor/jquery/jquery.min.js"></script>
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
