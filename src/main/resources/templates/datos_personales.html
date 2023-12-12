@@ -15,14 +15,17 @@
           rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="/css/one-page-wonder.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/style.css">
+    <link href="/css/general-styles.css" rel="stylesheet">
 </head>
 
 <body>
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
     <div class="container">
-<!--        <a class="navbar-brand" th:href="@{/cliente/(correo=${clienteLog.mail})}">Alquiler de Vehiculos - HOME</a>-->
+		<div class="logo-container">
+            <img src="https://cdn.domestika.org/c_pad,dpr_auto,f_auto,h_150,q_auto,w_150/v1477945609/school-logos/000/000/314/314-original.png?1477945609" alt="Logo">
+        </div>
+        <a class="navbar-brand" href="/">INICIO</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -30,11 +33,7 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-<!--                    <a class="nav-link" th:href="@{/reserva/hreservas(id=${clienteLog.id})}">Historial</a>-->
-
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/">Salir</a>
+                    <a class="nav-link" href="javascript:history.back()">VOLVER</a>
                 </li>
             </ul>
         </div>
@@ -47,12 +46,12 @@
         <div class="row align-items-center">
             <div class="col-lg-6 order-lg-1">
                 <div class="p-5">
-                    <h1 class="display-5">Formulario de datos personales</h1>
+                    <h1 class="display-5">Formulario de datos personales</h1><br>
                     <form th:object="${profesor}" action="/guardar_profe" method="POST"
                           enctype="multipart/form-data">
                         <input type="hidden" name="id" th:if="${profesor != null}" th:value="${profesor.id}"/>
 
-                        <label><h3>DATOS DEL Profe</h3></label><br>
+                        <label><h3>Datos del Profesor</h3></label><br>
                         <label>Nombre</label>
                         <input type="text" class="form-control mayus" name="nombre" th:field="*{nombre}"/>
 
@@ -60,12 +59,12 @@
                         <input type="text" class="form-control mayus" name="apellido" th:field="*{apellido}"/>
                         <label>DNI</label>
                         <input type="text" class="form-control" name="documento" th:field="*{documento}"/>
-                        <label>direccion</label>
+                        <label>Dirección</label>
                         <input type="text" class="form-control" name="direccion" th:field="*{direccion}"/>
-                        <label>Telefono</label>
+                        <label>Teléfono</label>
                         <input type="text" class="form-control" name="telefono" th:field="*{telefono}"/>
-
-                        <button type="submit" class="btn btn-primary">Guardar</button>
+						<br>
+                        <button type="submit" class="btn btn-primary ok">Guardar</button>
                     </form>
                 </div>
             </div>

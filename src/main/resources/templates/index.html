@@ -14,10 +14,14 @@
               rel="stylesheet">
         <!-- Custom styles for this template -->
         <link href="/css/one-page-wonder.min.css" rel="stylesheet">
+        <link href="/css/general-styles.css" rel="stylesheet">
     </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
     <div class="container">
+		<div class="logo-container">
+            <img src="https://cdn.domestika.org/c_pad,dpr_auto,f_auto,h_150,q_auto,w_150/v1477945609/school-logos/000/000/314/314-original.png?1477945609" alt="Logo">
+        </div>
         <a class="navbar-brand" href="/">INICIO</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,9 +31,6 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="/new_profe">AGREGAR UN PROFE</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/editar">EDITAR CALIFICACION</a>
                 </li>
             </ul>
         </div>
@@ -44,27 +45,29 @@
     </div>
 </header>
 <section>
-    <div>
-        <h3>ingrese el id</h3>
-        <form action="/buscarxid" method="POST">
-            <input type="number" class="form-control" name="id"/>
-            <br/>
-            <button type="submit" class="btn btn-primary">Ingresar</button>
-            <br/>
-        </form>
+	<div class="d-flex justify-content-around busqueda-index">
+	    <div class="text-center">
+	        <h3>Buscar por ID</h3>
+	        <form action="/buscarxid" method="POST">
+	            <input type="number" class="form-control" name="id"/>
+	            <br/>
+	            <button type="submit" class="btn btn-primary mt-2 ok">Buscar</button>
+	            <br/>
+	        </form>
+	    </div>
+	    <div class="text-center">
+	        <h3>Buscar por DNI</h3>
+	        <form action="/buscarxdni" method="POST">
+	            <input type="number" class="form-control" name="dni"/>
+	            <br/>
+	            <button type="submit" class="btn btn-primary mt-2 ok">Buscar</button>
+	            <br/>
+	        </form>
+	    </div>
     </div>
-    <div>
-        <h3>ingrese el DNI</h3>
-        <form action="/buscarxdni" method="POST">
-            <input type="number" class="form-control" name="dni"/>
-            <br/>
-            <button type="submit" class="btn btn-primary">Ingresar</button>
-            <br/>
-        </form>
-    </div>
-    <div class="container">
+    <div class="container tabla-index">
         <div class="row align-items-center">
-            <p> lista de Profesores </p>
+            <p> Lista de Profesores </p>
             <table class="table table-hover">
                 <thead>
                 <tr>
@@ -97,7 +100,7 @@
 </section>
 <footer class="py-5 bg-black">
     <div class="container">
-        <p class="m-0 text-center text-white small">Copyright &copy; Your Website 2023</p>
+        <p class="m-0 text-center text-white small">Copyright &copy; 2023</p>
     </div>
 </footer>
 <!-- Bootstrap core JavaScript -->
