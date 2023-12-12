@@ -22,8 +22,7 @@ public class InicioController {
     IProfesorService profesorService;
     @Autowired
     ICategoriaService categoriaService;
-    @Autowired
-    IActividadService actividadService;
+
     @Autowired
     PuntajeActividadServiceImpl puntajeActividadService;
     @Autowired
@@ -33,10 +32,18 @@ public class InicioController {
     public String cargarInicio(ModelMap model) {
         List<Profesor> profesores = profesorService.getAll();
         List<ProfesorTotalDePuntos> listaProfesoresTotalDePuntos = new ArrayList<>();
+        DecimalFormat formato = new DecimalFormat("#,##0.###");
 
         for (Profesor profesor : profesores) {
             ProfesorTotalDePuntos profesorTotalDePuntos = new ProfesorTotalDePuntos();
-            profesorTotalDePuntos.setTotalAcumulado(puntajeXCategoriaValidadoService.obtenerTotalPuntosPorProfesor(profesor));
+
+            // Obtener el total de puntos sin formatear
+            double totalPuntos = puntajeXCategoriaValidadoService.obtenerTotalPuntosPorProfesor(profesor);
+
+            // Formatear el total de puntos a tres decimales y reemplazar la coma por un punto
+            String totalPuntosFormateado = formato.format(totalPuntos).replace(",", ".");
+
+            profesorTotalDePuntos.setTotalAcumulado(Double.parseDouble(totalPuntosFormateado));
             profesorTotalDePuntos.setProfesor(profesor);
 
             listaProfesoresTotalDePuntos.add(profesorTotalDePuntos);
@@ -142,11 +149,12 @@ public class InicioController {
             categoriaConTotalItem.setTotalPorCategoria(totalPorCategoriaStr);
             categoriaConTotal.add(categoriaConTotalItem);
         }
-
         double total = puntajeXCategoriaValidadoService.obtenerTotalPuntosPorProfesor(profesor);
-        model.addAttribute("total_puntos", total);
+        DecimalFormat formato = new DecimalFormat("#,##0.###");
+        String totalFormateado = formato.format(total);
+
+        model.addAttribute("total_puntos", totalFormateado);
         model.addAttribute("profesor", profesor);
-        model.addAttribute("categoriaConTotal", categoriaConTotal);
         model.addAttribute("lCategorias", categoriaConTotal);
         model.addAttribute("profesorId", profesorId);
         return "categorias";
@@ -186,6 +194,7 @@ public class InicioController {
                 actividadesConPuntajes.add(actividadConPuntaje);
             }
             strCategoriasSeleccionadas = String.join(", ", categoriasSeleccionadas);
+
             model.addAttribute("profesor", profesor);
             model.addAttribute("categoriaId", categoriaId);
             model.addAttribute("categoria", categoria);
@@ -194,7 +203,7 @@ public class InicioController {
             model.addAttribute("profesor_nombre", profesor_nombre);
             model.addAttribute("actividadesConPuntajes", actividadesConPuntajes);
             model.addAttribute("strCategoriasSeleccionadas", strCategoriasSeleccionadas);
-            model.addAttribute("categoriasSeleccionadas", categoriasSeleccionadas); // Agregar a modelo
+            model.addAttribute("categoriasSeleccionadas", categoriasSeleccionadas);
             return "categoria";
         }
         return "error";
@@ -227,8 +236,6 @@ public class InicioController {
             nuevoRegistro.setProfesor(profesor);
             puntajeXCategoriaValidadoService.save(nuevoRegistro);
         }
-
-
         // Obtener las actividades de la categoría seleccionada
         List<Actividad> actividades = categoria.getActividades();
 

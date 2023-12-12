@@ -87,12 +87,6 @@
                     <td scope="row" th:text="${lista.categoria.puntuacionMaxima}"></td>
                     <td scope="row" th:text="${lista.totalPorCategoria}"></td>
 
-<!--                    esto muestra hasta tres decimales ejemplo 3,123 o 3,100-->
-<!--                    <td scope="row" th:text="${#numbers.formatDecimal(lista.totalPorCategoria, 2, 'POINT', 3, 'COMMA') == '0.00' ?-->
-<!--                     #numbers.formatInteger(lista.totalPorCategoria) : #numbers.formatDecimal(lista.totalPorCategoria, 2, 'POINT', 3, 'COMMA')}"></td>-->
-
-<!--                    <td scope="row" th:text="${#numbers.formatDecimal(lista.totalPorCategoria, 2, 'POINT', 3, 'COMMA').substring(0, #strings.lastIndexOf(#strings.trim(#numbers.formatDecimal(lista.totalPorCategoria, 2, 'POINT', 3, 'COMMA')), ','))}"></td>-->
-
 
                     <td>
                         <input type="checkbox" style="transform: scale(2.0)" name="categoriasSeleccionadas" th:value="${lista.categoria.id}">

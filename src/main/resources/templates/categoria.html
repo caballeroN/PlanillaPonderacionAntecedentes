@@ -14,6 +14,8 @@
           rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="/css/one-page-wonder.min.css" rel="stylesheet">
+    <link href="/css/styles.css" rel="stylesheet">
+
     <script src="/static/js/index.js"></script>
 
 </head>
@@ -73,25 +75,24 @@
                                 <input type="text" th:value="${item.puntajeActividad.puntaje}" name="asignados"
                                        class="asignados-input" onchange="calcularSumaAsignados();"
                                        placeholder="0" id="lastInput"
-                                       data-previous-value="${item.puntajeActividad.puntaje}">
+                                       data-previous-value="${item.puntajeActividad.puntaje}" onclick="borrarContenido(this)">
                             </td>
 
                         </tr>
                         <tr>
                             <td colspan="1"></td>
-                            <td>Puntuación Maxima:</td>
+                            <td class="align-right bold-text">Puntuación Maxima:</td>
                             <td id="ptsMaximoXCategoria" th:text="${categoria.puntuacionMaxima}"></td>
                         </tr>
                         <tr>
-                            <td colspan="2"></td>
-                            <td>Total Parcial:</td>
+                            <td colspan="3"></td>
                             <td id="totalParcial" class="text-right">Total Parcial: 0</td>
                         </tr>
                         <tr>
                             <td colspan="2"></td>
                             <td>Total:</td>
                             <td>
-                                <input type="number" id="totalValidado" name="totalValidado" class="text-right" placeholder="Total Validado: 0">
+                                <input type="text" id="totalValidado" name="totalValidado" class="text-right" placeholder="Total Validado: 0" pattern="[0-9]+([\.,][0-9]+)?">
                             </td>
                         </tr>
                         </tbody>
@@ -113,6 +114,9 @@
 <script src="/vendor/jquery/jquery.min.js"></script>
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script>
+    function borrarContenido(input) {
+        input.value = "";
+    }
     document.addEventListener("DOMContentLoaded", function () {
         // Llamar a la función después de que se cargue la página
         calcularSumaAsignados();
