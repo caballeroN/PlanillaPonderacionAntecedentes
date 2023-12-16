@@ -30,7 +30,7 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/new_profe">AGREGAR UN PROFE</a>
+                    <a id= "crearProfesor" class="nav-link" href="">AGREGAR UN PROFE</a>
                 </li>
             </ul>
         </div>
@@ -49,18 +49,18 @@
 	    <div class="text-center">
 	        <h3>Buscar por ID</h3>
 	        <form action="/buscarxid" method="POST">
-	            <input type="number" class="form-control" name="id"/>
+	            <input id="campoBusquedaPorID" type="number" class="form-control" name="id"/>
 	            <br/>
-	            <button type="submit" class="btn btn-primary mt-2 ok">Buscar</button>
+	            <button id="botonBuscarPorID" type="submit" class="btn btn-primary mt-2 ok">Buscar</button>
 	            <br/>
 	        </form>
 	    </div>
 	    <div class="text-center">
 	        <h3>Buscar por DNI</h3>
 	        <form action="/buscarxdni" method="POST">
-	            <input type="number" class="form-control" name="dni"/>
+	            <input id="campoBusquedaPorDNI" type="number" class="form-control" name="dni"/>
 	            <br/>
-	            <button type="submit" class="btn btn-primary mt-2 ok">Buscar</button>
+	            <button id="botonBuscarPorDNI" type="submit" class="btn btn-primary mt-2 ok">Buscar</button>
 	            <br/>
 	        </form>
 	    </div>
@@ -106,5 +106,35 @@
 <!-- Bootstrap core JavaScript -->
 <script src="/vendor/jquery/jquery.min.js"></script>
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Otras funciones -->
+<script src="/js/funciones.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const campoBusquedaPorID = document.getElementById("campoBusquedaPorID");
+    const botonBuscarPorID = document.getElementById("botonBuscarPorID");
+
+    const campoBusquedaPorDNI = document.getElementById("campoBusquedaPorDNI");
+    const botonBuscarPorDNI = document.getElementById("botonBuscarPorDNI");
+
+    function validarCampoYBoton(campo, boton) {
+        const valorCampoBusqueda = campo.value.trim();
+        boton.disabled = !valorCampoBusqueda;
+    }
+
+    // Añadir evento input a cada campo de búsqueda
+    campoBusquedaPorID.addEventListener("input", function () {
+        validarCampoYBoton(campoBusquedaPorID, botonBuscarPorID);
+    });
+
+    campoBusquedaPorDNI.addEventListener("input", function () {
+        validarCampoYBoton(campoBusquedaPorDNI, botonBuscarPorDNI);
+    });
+
+    // Llamar a la función inicialmente para configurar el estado inicial
+    validarCampoYBoton(campoBusquedaPorID, botonBuscarPorID);
+    validarCampoYBoton(campoBusquedaPorDNI, botonBuscarPorDNI);
+});
+
+</script>
 </body>
 </html>

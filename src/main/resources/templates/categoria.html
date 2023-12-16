@@ -15,8 +15,6 @@
     <!-- Custom styles for this template -->
     <link href="/css/one-page-wonder.min.css" rel="stylesheet">
     <link href="/css/general-styles.css" rel="stylesheet">
-    <script src="/static/js/index.js"></script>
-
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
@@ -89,36 +87,20 @@
                         <tr th:each="item : ${actividadesConPuntajes}">
                             <td scope="row" th:text="${item.actividad.id}"></td>
                             <td scope="row" th:text="${item.actividad.nombre}"></td>
-                            <td scope="row" class="puntosMaximos" th:text="${item.actividad.puntuacion}"></td>
+                            <td scope="row" th:text="${item.actividad.puntuacion}"></td>
                             <td>
-                                <input type="text" th:value="${item.puntajeActividad.puntaje}" name="asignados"
-                                       class="asignados-input" onchange="calcularSumaAsignados();"
-                                       placeholder="0" id="lastInput"
-                                       data-previous-value="${item.puntajeActividad.puntaje}" onclick="borrarContenido(this)">
-                            </td>
-
+                                <input type="number" th:value="${item.puntajeActividad.puntaje}" name="asignados"
+                                       class="asignados-input" onchange="calcularSumaAsignados()" placeholder="0">
                         </tr>
                         <tr>
                             <td colspan="1"></td>
-                            <td class="align-right bold-text">Puntuación Maxima:</td>
-                            <td id="ptsMaximoXCategoria" th:text="${categoria.puntuacionMaxima}"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="3"></td>
-                            <td id="totalParcial" class="text-right">Total Parcial: 0</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"></td>
-                            <td>Total:</td>
-                            <td>
-                                <input type="text" id="totalValidado" name="totalValidado" class="text-right" placeholder="Total Validado: 0" pattern="[0-9]+([\.,][0-9]+)?">
-                            </td>
+                            <td>Puntuación Maxima:</td>
+                            <td id="puntuacionMaxima" th:text="${categoria.puntuacionMaxima}"></td>
                         </tr>
                         </tbody>
                     </table>
-
                     <div id="totalParcial" class="text-right">Total Parcial: 0</div>
-                    <button type="submit" class= "ok">Continuar</button>    
+                    <button id="botonContinuar" type="submit" class= "ok">Continuar</button>
                 </form>
             </div>
         </div>
@@ -132,48 +114,40 @@
 <!-- Bootstrap core JavaScript -->
 <script src="/vendor/jquery/jquery.min.js"></script>
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Otras funciones -->
 <script>
-    function borrarContenido(input) {
-        input.value = "";
-    }
-    document.addEventListener("DOMContentLoaded", function () {
-        // Llamar a la función después de que se cargue la página
-        calcularSumaAsignados();
+document.addEventListener("DOMContentLoaded", function() {
+    // Llamar a la función después de que se cargue la página
+    calcularSumaAsignados();
+});
+function calcularSumaAsignados() {
+    let puntajeTotal = 0;
+
+    // Obtener todos los inputs de la clase "asignados-input"
+    const asignadosInputs = document.querySelectorAll(".asignados-input");
+
+    asignadosInputs.forEach(function (input) {
+        if (!isNaN(parseFloat(input.value))) {
+            puntajeTotal += parseFloat(input.value);
+        }
     });
 
-    function calcularSumaAsignados() {
-        const inputs = document.getElementsByClassName('asignados-input'); // Cambiado a seleccionar por clase
-        let suma = 0;
-        let puntosMaximos = 0;
+    // Mostrar el total en el elemento con id "totalParcial"
+    document.getElementById("totalParcial").textContent = "Total Parcial: " + puntajeTotal;
 
-        // Obtener el valor de puntosMaximos
-        const puntosMaximosElement = document.getElementsByClassName('puntosMaximos');
+    // Verificar si el total supera la puntuación máxima
+    const puntuacionMaxima = parseFloat(document.getElementById("puntuacionMaxima").textContent);
 
-        for (let i = 0; i < inputs.length; i++) {
-            const inputValue = inputs[i].value;
-            const numericValue = parseFloat(inputValue); // Convertir el valor a número
+    if (puntajeTotal > puntuacionMaxima) {
+		
+        alert("El total parcial no puede superar la puntuación máxima de la categoría.");
+        botonContinuar.disabled = true;
+    } else {
+		botonContinuar.disabled = false;
+	}
+}
 
-            if (!isNaN(numericValue)) { // Verificar si es un número válido
-                suma += numericValue;
-                const pts = puntosMaximosElement[i].textContent.valueOf();
-            }
-        }
 
-        // Actualizar el elemento en la página con la suma
-        document.getElementById('totalParcial').textContent = 'Total Parcial: ' + suma;
-
-        const totalValidadoInput = document.getElementById('totalValidado');
-        const ptsMaximoXCategoria = document.getElementById('ptsMaximoXCategoria').textContent;
-
-        if (suma > ptsMaximoXCategoria) {
-            alert("El total de puntos para esta categoria sera el maximo");
-            totalValidadoInput.value = ptsMaximoXCategoria;
-        } else {
-            totalValidadoInput.value = suma;
-        }
-    }
 </script>
-
-
 </body>
 </html>
