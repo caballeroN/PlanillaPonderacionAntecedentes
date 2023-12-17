@@ -83,7 +83,6 @@ public class InicioController {
     @PostMapping("/buscarxdni")
     public String buscarProfeXDNI(@RequestParam String dni, ModelMap model) {
         Profesor profe = profesorService.getByDni(dni);
-        System.out.println("profesor " +profe);
         if(profe != null){
             model.addAttribute("id", profe.getId());
             return buscarXdni(profe.getId(), model);
@@ -215,7 +214,6 @@ public class InicioController {
                                   @RequestParam(name = "asignados") List<String> asignados,
                                   @RequestParam(name = "totalValidado") String totalValidado, ModelMap model) {
 
-        System.out.println("este es el validado " + totalValidado);
 
         int idCategoria = Integer.parseInt(strCategoriasSeleccionadas.split(",")[0].trim());
         Profesor profesor = profesorService.getById(profesorId);

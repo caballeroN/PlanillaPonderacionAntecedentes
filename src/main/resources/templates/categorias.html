@@ -64,8 +64,7 @@
                 </table>
             </div>
             <div class="row align-items-center">
-
-            <p> lista de Categorias </p>
+            <h4>Listado de Categorias:</h4>
             <form th:action="@{'/categorias_p/' + ${profesorId}}" method="post">
                 <input type="hidden" name="profesorId" th:value="${profesorId}" />
 
@@ -76,7 +75,10 @@
                     <th scope="col">Titulo</th>
                     <th scope="col">Puntos Máximos</th>
                     <th scope="col">Puntaje por Categoria</th>
-                    <th scope="col">Seleccionar</th>
+                    <th scope="col">Todas <br>
+                        <input type="checkbox" style="transform: scale(2.0); padding: 10px;" name="SeleccionarTodo"
+                               onclick="cambioDeEstadoCheck()">
+                    </th>
 
                 </tr>
                 </thead>
