@@ -33,7 +33,8 @@ public class InicioController {
         List<Profesor> profesores = profesorService.getAll();
         List<ProfesorTotalDePuntos> listaProfesoresTotalDePuntos = new ArrayList<>();
         DecimalFormat formato = new DecimalFormat("#,##0.###");
-
+        
+        //ITERADOR aaaaaa
         for (Profesor profesor : profesores) {
             ProfesorTotalDePuntos profesorTotalDePuntos = new ProfesorTotalDePuntos();
 

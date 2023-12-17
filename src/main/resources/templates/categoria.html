@@ -15,14 +15,12 @@
     <!-- Custom styles for this template -->
     <link href="/css/one-page-wonder.min.css" rel="stylesheet">
     <link href="/css/general-styles.css" rel="stylesheet">
-    <script src="/static/js/index.js"></script>
-
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
     <div class="container">
 		<div class="logo-container">
-            <img src="https://cdn.domestika.org/c_pad,dpr_auto,f_auto,h_150,q_auto,w_150/v1477945609/school-logos/000/000/314/314-original.png?1477945609" alt="Logo">
+            <img src="/img/mb-logo.png" alt="Logo">
         </div>
         <a class="navbar-brand" href="/">INICIO</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
@@ -79,7 +77,6 @@
                     <table class="table table-hover">
                         <thead>
                         <tr>
-                            <th scope="col">ID actividad</th>
                             <th scope="col">Nombre Actividad</th>
                             <th scope="col">Pts.</th>
                             <th scope="col">Puntos Asignados</th>
@@ -87,7 +84,6 @@
                         </thead>
                         <tbody>
                         <tr th:each="item : ${actividadesConPuntajes}">
-                            <td scope="row" th:text="${item.actividad.id}"></td>
                             <td scope="row" th:text="${item.actividad.nombre}"></td>
                             <td scope="row" class="puntosMaximos" th:text="${item.actividad.puntuacion}"></td>
                             <td>
@@ -96,20 +92,19 @@
                                        placeholder="0" id="lastInput"
                                        data-previous-value="${item.puntajeActividad.puntaje}" onclick="borrarContenido(this)">
                             </td>
-
                         </tr>
                         <tr>
                             <td colspan="1"></td>
-                            <td class="align-right bold-text">Puntuación Maxima:</td>
+                            <td class="align-right bold-text" style="text-align: right;">Puntuación Maxima:</td>
                             <td id="ptsMaximoXCategoria" th:text="${categoria.puntuacionMaxima}"></td>
                         </tr>
                         <tr>
-                            <td colspan="3"></td>
-                            <td id="totalParcial" class="text-right">Total Parcial: 0</td>
+                            <td colspan="2"></td>
+                            <td id="totalParcial" class="text-left">Total Parcial: 0</td>
                         </tr>
                         <tr>
-                            <td colspan="2"></td>
-                            <td>Total:</td>
+                            <td colspan="1"></td>
+                            <td style="text-align: right;">Total:</td>
                             <td>
                                 <input type="text" id="totalValidado" name="totalValidado" class="text-right" placeholder="Total Validado: 0" pattern="[0-9]+([\.,][0-9]+)?">
                             </td>
@@ -117,7 +112,7 @@
                         </tbody>
                     </table>
 
-                    <div id="totalParcial" class="text-right">Total Parcial: 0</div>
+                 <!--   <div id="totalParcial" class="text-right">Total Parcial: 0</div> -->
                     <button type="submit" class= "ok">Continuar</button>    
                 </form>
             </div>
