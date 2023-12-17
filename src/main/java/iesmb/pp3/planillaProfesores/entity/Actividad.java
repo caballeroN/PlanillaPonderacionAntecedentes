@@ -16,7 +16,7 @@ public class Actividad {
     private Integer id;
 
     private String nombre;
-    private int puntuacion;
+    private double puntuacion;
     @ManyToOne
     private Categoria categoria;
 
@@ -49,7 +49,7 @@ public class Actividad {
         this.nombre = nombre;
     }
 
-    public int getPuntuacion() {
+    public double getPuntuacion() {
         return puntuacion;
     }
 

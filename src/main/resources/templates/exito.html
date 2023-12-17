@@ -17,25 +17,9 @@
 		<link href="/css/general-styles.css" rel="stylesheet">
     </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
-    <div class="container">
-		<div class="logo-container">
-            <img src="https://cdn.domestika.org/c_pad,dpr_auto,f_auto,h_150,q_auto,w_150/v1477945609/school-logos/000/000/314/314-original.png?1477945609" alt="Logo">
-        </div>
-        <a class="navbar-brand" href="/">INICIO</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a id= "crearProfesor" class="nav-link" href="">AGREGAR UN PROFE</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+	
+<nav th:replace="~{/components/main-nav}"></nav>
+
 <header class="masthead text-center text-white" style="height: 50vh; display: flex; flex-direction: column; justify-content: center;">
     <div class="masthead-content">
         <div class="container">
@@ -55,7 +39,7 @@
 </section>
 <footer class="my-footer py-5 bg-black">
     <div class="container">
-        <p class="m-0 text-center text-white small">Copyright &copy; Your Website 2023</p>
+        <p th:replace="~{/components/copyright}"></p>
     </div>
 </footer>
 <!-- Bootstrap core JavaScript -->
