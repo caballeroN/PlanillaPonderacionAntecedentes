@@ -108,33 +108,5 @@
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- Otras funciones -->
 <script src="/js/funciones.js"></script>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    const campoBusquedaPorID = document.getElementById("campoBusquedaPorID");
-    const botonBuscarPorID = document.getElementById("botonBuscarPorID");
-
-    const campoBusquedaPorDNI = document.getElementById("campoBusquedaPorDNI");
-    const botonBuscarPorDNI = document.getElementById("botonBuscarPorDNI");
-
-    function validarCampoYBoton(campo, boton) {
-        const valorCampoBusqueda = campo.value.trim();
-        boton.disabled = !valorCampoBusqueda;
-    }
-
-    // Añadir evento input a cada campo de búsqueda
-    campoBusquedaPorID.addEventListener("input", function () {
-        validarCampoYBoton(campoBusquedaPorID, botonBuscarPorID);
-    });
-
-    campoBusquedaPorDNI.addEventListener("input", function () {
-        validarCampoYBoton(campoBusquedaPorDNI, botonBuscarPorDNI);
-    });
-
-    // Llamar a la función inicialmente para configurar el estado inicial
-    validarCampoYBoton(campoBusquedaPorID, botonBuscarPorID);
-    validarCampoYBoton(campoBusquedaPorDNI, botonBuscarPorDNI);
-});
-
-</script>
 </body>
 </html>
