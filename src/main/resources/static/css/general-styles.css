@@ -20,7 +20,7 @@
     margin: 0;
     padding: 0;
     min-height: 100%;
-    border: 1px solid red;
+    /*border: 1px solid red;*/
 	}
 
 	.logo-container {
@@ -120,6 +120,14 @@
 	
 	.msj-borrado {
     color: #dc3545;
+    font-size: 1.5rem;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+	.msj-creado {
+    color: rgb(0, 206, 0);
     font-size: 1.5rem;
     text-align: center;
     margin-top: 20px;
