@@ -1,3 +1,17 @@
+
+let contador = 0;
+
+function cambioDeEstadoCheck() {
+    // Establecer el estado de todos los checkboxes en falso
+    if (contador % 2 === 0) {
+        $('[name="categoriasSeleccionadas"]').prop('checked', true);
+    } else {
+        $('[name="categoriasSeleccionadas"]').prop('checked', false);
+    }
+    contador++;
+}
+
+
 //Redirigir a página para crear profesor
 
 document.addEventListener("DOMContentLoaded", function () {
