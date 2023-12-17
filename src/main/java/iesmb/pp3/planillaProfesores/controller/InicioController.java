@@ -1,7 +1,6 @@
 package iesmb.pp3.planillaProfesores.controller;
 
 import iesmb.pp3.planillaProfesores.entity.*;
-import iesmb.pp3.planillaProfesores.service.IActividadService;
 import iesmb.pp3.planillaProfesores.service.ICategoriaService;
 import iesmb.pp3.planillaProfesores.service.IProfesorService;
 import iesmb.pp3.planillaProfesores.service.IPuntajeXCategoriaValidadoService;
