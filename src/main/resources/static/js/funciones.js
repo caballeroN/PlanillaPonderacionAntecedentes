@@ -53,30 +53,67 @@ document.addEventListener("DOMContentLoaded", function () {
 
 //Bloquear busqueda con campos vacíos
 document.addEventListener("DOMContentLoaded", function () {
-	
-    const campoBusquedaPorID = document.getElementById("campoBusquedaPorID");
-    const botonBuscarPorID = document.getElementById("botonBuscarPorID");
+    // Verificar si el cuerpo de la página tiene una clase específica
+    const esPaginaIndex = document.body.classList.contains('pag-index');
 
-    const campoBusquedaPorDNI = document.getElementById("campoBusquedaPorDNI");
-    const botonBuscarPorDNI = document.getElementById("botonBuscarPorDNI");
+    if (esPaginaIndex) {
+        const campoBusquedaPorID = document.getElementById("campoBusquedaPorID");
+        const botonBuscarPorID = document.getElementById("botonBuscarPorID");
 
-    function validarCampoYBoton(campo, boton) {
-        const valorCampoBusqueda = campo.value.trim();
-        boton.disabled = !valorCampoBusqueda;
+        const campoBusquedaPorDNI = document.getElementById("campoBusquedaPorDNI");
+        const botonBuscarPorDNI = document.getElementById("botonBuscarPorDNI");
+
+        function validarCampoYBoton(campo, boton) {
+            const valorCampoBusqueda = campo.value.trim();
+            boton.disabled = !valorCampoBusqueda;
+        }
+
+        // Añade evento input a cada campo de búsqueda
+        campoBusquedaPorID.addEventListener("input", function () {
+            validarCampoYBoton(campoBusquedaPorID, botonBuscarPorID);
+        });
+
+        campoBusquedaPorDNI.addEventListener("input", function () {
+            validarCampoYBoton(campoBusquedaPorDNI, botonBuscarPorDNI);
+        });
+
+        // Llama a la función inicialmente para configurar el estado inicial
+        validarCampoYBoton(campoBusquedaPorID, botonBuscarPorID);
+        validarCampoYBoton(campoBusquedaPorDNI, botonBuscarPorDNI);
+    }
+});
+
+
+//Bloquea guardado de profesor por campos vacios
+document.addEventListener("DOMContentLoaded", function () {
+    const campoNombre = document.getElementById("campoNombre");
+    const campoApellido = document.getElementById("campoApellido");
+    const campoDNI = document.getElementById("campoDNI");
+    const campoDireccion = document.getElementById("campoDireccion");
+    const campoTel = document.getElementById("campoTel");
+    const botonGuardar = document.getElementById("botonGuardar");
+
+    // Función para validar campos y actualizar el botón
+    function validarCamposYBoton() {
+        const valorCampoNombre = campoNombre.value.trim();
+        const valorCampoApellido = campoApellido.value.trim();
+        const valorCampoDNI = campoDNI.value.trim();
+        const valorCampoDireccion = campoDireccion.value.trim();
+        const valorCampoTel = campoTel.value.trim();
+
+        // Habilita el botón solo si todos los campos están completos
+        botonGuardar.disabled = !(valorCampoNombre && valorCampoApellido && valorCampoDNI && valorCampoDireccion && valorCampoTel);
     }
 
-    // Añadir evento input a cada campo de búsqueda
-    campoBusquedaPorID.addEventListener("input", function () {
-        validarCampoYBoton(campoBusquedaPorID, botonBuscarPorID);
-    });
+    // Agrega event listener a cada campo para validar y actualizar el botón
+    campoNombre.addEventListener("input", validarCamposYBoton);
+    campoApellido.addEventListener("input", validarCamposYBoton);
+    campoDNI.addEventListener("input", validarCamposYBoton);
+    campoDireccion.addEventListener("input", validarCamposYBoton);
+    campoTel.addEventListener("input", validarCamposYBoton);
 
-    campoBusquedaPorDNI.addEventListener("input", function () {
-        validarCampoYBoton(campoBusquedaPorDNI, botonBuscarPorDNI);
-    });
-
-    // Llamar a la función inicialmente para configurar el estado inicial
-    validarCampoYBoton(campoBusquedaPorID, botonBuscarPorID);
-    validarCampoYBoton(campoBusquedaPorDNI, botonBuscarPorDNI);
+    // Llama a la función inicialmente para configurar el estado inicial
+    validarCamposYBoton();
 });
 
 

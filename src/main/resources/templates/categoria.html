@@ -28,76 +28,82 @@
 </header>
 <section>
     <div class="container">
-        <div class="row align-items-center">
-            <div class="row">
-                <h5>Editando a:</h5>
-                <table class="table table-bordered">
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>DNI</th>
-                    </tr>
-                    <tr>
-                        <td th:text="${profesor.id}"></td>
-                        <td th:text="${profesor.nombre}"></td>
-                        <td th:text="${profesor.apellido}"></td>
-                        <td th:text="${profesor.documento}"></td>
-                    </tr>
-                </table>
-            </div>
-            <br>
-            <div>
-                <h5 th:text="'Categoría ID: ' + ${categoriaId}"></h5>
-                <h5 th:text="'Categoría Nombre: ' + ${nameCategoria}"></h5>
-                <h5> Lista de Actividades: </h5>
+        <div class="align-items-center">
+            <div class="column align-items-center">
 
-                <form th:action="@{'/categoria_t/' + ${profesorId}}" method="post">
-                    <input type="hidden" name="profesorId" th:value="${profesorId}"/>
-                    <input type="hidden" name="strCategoriasSeleccionadas"
-                           th:value="${strCategoriasSeleccionadas}"/>
-
-                    <table class="table table-hover">
-                        <thead>
+                <div class="column">
+                    <h5>Editando a:</h5>
+                    <table class="table table-bordered">
                         <tr>
-                            <th scope="col">Nombre Actividad</th>
-                            <th scope="col">Pts.</th>
-                            <th scope="col">Puntos Asignados</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="item : ${actividadesConPuntajes}">
-                            <td scope="row" th:text="${item.actividad.nombre}"></td>
-                            <td scope="row" class="puntosMaximos" th:text="${item.actividad.puntuacion}"></td>
-                            <td>
-                                <input type="text" th:value="${item.puntajeActividad.puntaje}" name="asignados"
-                                       class="asignados-input" onchange="calcularSumaAsignados();"
-                                       placeholder="0" id="lastInput"
-                                       data-previous-value="${item.puntajeActividad.puntaje}" onclick="borrarContenido(this)"
-                                       pattern="[0-9]+([\.][0-9]+)?"
-                                       title="Ingrese números y puntos">
-                            </td>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>DNI</th>
                         </tr>
                         <tr>
-                            <td colspan="1"></td>
-                            <td class="text-left">Total Parcial:</td>
-                            <td id="totalParcial" class="text-left">0</td>
+                            <td th:text="${profesor.id}"></td>
+                            <td th:text="${profesor.nombre}"></td>
+                            <td th:text="${profesor.apellido}"></td>
+                            <td th:text="${profesor.documento}"></td>
                         </tr>
-                        <tr>
-                            <td class="align-right bold-text" style="text-align: right;">Puntuación Maxima que entrega esta categoria:</td>
-                            <td id="ptsMaximoXCategoria" th:text="${categoria.puntuacionMaxima}"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="1"></td>
-                            <td style="text-align: right;">Total:</td>
-                            <td>
-                                <input type="text" id="totalValidado" name="totalValidado" class="text-right" placeholder="Total Validado: 0" pattern="[0-9]+([\.,][0-9]+)?">
-                            </td>
-                        </tr>
-                        </tbody>
                     </table>
-                    <button type="submit" class= "ok">Continuar</button>
-                </form>
+                </div>
+                <div class="contenedor-titulo_categoria">
+                    <h5 th:text="'Categoría ID: ' + ${categoriaId}"></h5>
+                    <h5 th:text="'Categoría Nombre: ' + ${nameCategoria}"></h5>
+                </div>
+                <div>
+                    <h5> Lista de Actividades: </h5>
+                    <form th:action="@{'/categoria_t/' + ${profesorId}}" method="post">
+                        <input type="hidden" name="profesorId" th:value="${profesorId}"/>
+                        <input type="hidden" name="strCategoriasSeleccionadas"
+                               th:value="${strCategoriasSeleccionadas}"/>
+
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th scope="col">Nombre Actividad</th>
+                                <th scope="col">Puntos.</th>
+                                <th scope="col">Puntos Asignados</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="item : ${actividadesConPuntajes}">
+                                <td scope="row" th:text="${item.actividad.nombre}"></td>
+                                <td scope="row" class="puntosMaximos" th:text="${item.actividad.puntuacion}"></td>
+                                <td>
+                                    <input type="text" th:value="${item.puntajeActividad.puntaje}" name="asignados"
+                                           class="asignados-input" onchange="calcularSumaAsignados();"
+                                           placeholder="0" id="lastInput"
+                                           data-previous-value="${item.puntajeActividad.puntaje}"
+                                           onclick="borrarContenido(this)"
+                                           pattern="[0-9]+([\.][0-9]+)?"
+                                           title="Ingrese números y puntos">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="1"></td>
+                                <td style="text-align: right;">Subtotal:</td>
+                                <td id="totalParcial" class="text-left">0</td>
+                            </tr>
+
+                            <tr>
+                                <td id="strPuntuacionMaxima" class="align-right bold-text"
+                                    style="background-color: #ffffcc;"
+                                    th:text="'Puntuación máxima que entrega esta categoría: ' +  ${categoria.puntuacionMaxima}"></td>
+                                <input type="hidden" id="ptsMaximoXCategoria"   th:value=" ${categoria.puntuacionMaxima}">
+                                <td style="text-align: right;">Total:</td>
+
+
+                                <td>
+                                    <input type="text" id="totalValidado" name="totalValidado" class="text-left" placeholder="0" readonly>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <button type="submit" class="ok">Continuar</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -114,7 +120,7 @@
     }
     function formatNumber(number) {
     return parseFloat(number).toFixed(3);
-}
+    }
     document.addEventListener("DOMContentLoaded", function () {
         // Llamar a la función después de que se cargue la página
         calcularSumaAsignados();
@@ -127,6 +133,7 @@
 
         // Obtener el valor de puntosMaximos
         const puntosMaximosElement = document.getElementsByClassName('puntosMaximos');
+
 
         for (let i = 0; i < inputs.length; i++) {
             const inputValue = inputs[i].value;
@@ -142,12 +149,15 @@
         document.getElementById('totalParcial').textContent = formatNumber(suma);
 
         const totalValidadoInput = document.getElementById('totalValidado');
-        const ptsMaximoXCategoria = document.getElementById('ptsMaximoXCategoria').textContent;
+        const ptsMaximoXCategoriajs = document.getElementById('ptsMaximoXCategoria').value;
 
-        if (suma > ptsMaximoXCategoria) {
+
+        if (suma > ptsMaximoXCategoriajs) {
+        console.log("uno");
             alert("El total de puntos para esta categoria sera el maximo");
-            totalValidadoInput.value = formatNumber(ptsMaximoXCategoria);
-    } else {
+            totalValidadoInput.value = formatNumber(ptsMaximoXCategoriajs);
+        } else {
+                console.log("dos"+suma +"   "+ ptsMaximoXCategoriajs);
         totalValidadoInput.value = formatNumber(suma);
         }
     }

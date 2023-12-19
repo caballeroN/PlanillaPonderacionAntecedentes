@@ -127,6 +127,8 @@ public class InicioController {
         newProfe.setTelefono(telefono);
         newProfe.setDocumento(documento);
         profesorService.save(newProfe);
+        Integer profesorId = newProfe.getId();
+        model.addAttribute("profesorId", profesorId);
         return "exito";
     }
 

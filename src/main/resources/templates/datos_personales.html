@@ -29,24 +29,24 @@
             <div class="col-lg-6 order-lg-1">
                 <div class="p-5">
                     <h1 class="display-5">Formulario de datos personales</h1><br>
-                    <form th:object="${profesor}" action="/guardar_profe" method="POST"
+                    <form id="formularioProfesor" th:object="${profesor}" action="/guardar_profe" method="POST"
                           enctype="multipart/form-data">
                         <input type="hidden" name="id" th:if="${profesor != null}" th:value="${profesor.id}"/>
 
                         <label><h3>Datos del Profesor</h3></label><br>
                         <label>Nombre</label>
-                        <input type="text" class="form-control mayus" name="nombre" th:field="*{nombre}"/>
+                        <input id="campoNombre" type="text" class="form-control mayus" name="nombre" th:field="*{nombre}"/>
 
                         <label>Apellido</label>
-                        <input type="text" class="form-control mayus" name="apellido" th:field="*{apellido}"/>
+                        <input id="campoApellido" type="text" class="form-control mayus" name="apellido" th:field="*{apellido}"/>
                         <label>DNI</label>
-                        <input type="text" class="form-control" name="documento" th:field="*{documento}"/>
+                        <input id="campoDNI" type="text" class="form-control" name="documento" th:field="*{documento}"/>
                         <label>Dirección</label>
-                        <input type="text" class="form-control" name="direccion" th:field="*{direccion}"/>
+                        <input id="campoDireccion" type="text" class="form-control" name="direccion" th:field="*{direccion}"/>
                         <label>Teléfono</label>
-                        <input type="text" class="form-control" name="telefono" th:field="*{telefono}"/>
+                        <input id="campoTel" type="text" class="form-control" name="telefono" th:field="*{telefono}"/>
 						<br>
-                        <button type="submit" class="btn btn-primary ok">Guardar</button>
+                        <button id="botonGuardar" type="submit" class="btn btn-primary ok">Guardar</button>
                     </form>
                 </div>
             </div>
@@ -60,5 +60,8 @@
 <!-- Bootstrap core JavaScript -->
 <script src="/vendor/jquery/jquery.min.js"></script>
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Otras funciones -->
+<script src="/js/funciones.js"></script>
+
 </body>
 </html>
