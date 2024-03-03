@@ -74,8 +74,12 @@
                     <td scope="row" th:text="${elemento.profesor.telefono}">
                     <td scope="row" th:text="${elemento.totalAcumulado}">
                     <td>
-                        <a th:href="@{/xdni(id=${elemento.profesor.id})}">Ver Registro</a>
+                        <form action="/buscarxid" method="POST">
+                            <input type="hidden" name="id" th:value="${elemento.profesor.id}">
+                            <button type="submit" class="btn btn-primary mt-2 ok">Ver Registro</button>
+                        </form>
                     </td>
+
                 </tr>
                 </tbody>
             </table>

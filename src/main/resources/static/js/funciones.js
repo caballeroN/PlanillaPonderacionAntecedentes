@@ -120,3 +120,58 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 });
+
+// Controla que en datos_personales.html se envien datos vacios
+document.addEventListener("DOMContentLoaded", function() {
+    const form = document.getElementById("guardar"); // Reemplaza "tuFormulario" con el ID de tu formulario
+
+    form.addEventListener("submit", function(event) {
+        // Obtener los campos del formulario
+        const nombre = form.querySelector('input[name="nombre"]');
+        const apellido = form.querySelector('input[name="apellido"]');
+        const documento = form.querySelector('input[name="documento"]');
+        const direccion = form.querySelector('input[name="direccion"]');
+        const telefono = form.querySelector('input[name="telefono"]');
+
+        // Verificar si los campos requeridos están vacíos
+        if (nombre.value.trim() === '') {
+            nombre.classList.add('error');
+        } else {
+            nombre.classList.remove('error');
+        }
+
+        if (apellido.value.trim() === '') {
+            apellido.classList.add('error');
+        } else {
+            apellido.classList.remove('error');
+        }
+
+        if (documento.value.trim() === '') {
+            documento.classList.add('error');
+        } else {
+            documento.classList.remove('error');
+        }
+
+        if (telefono.value.trim() === '') {
+            telefono.classList.add('error');
+        } else {
+            telefono.classList.remove('error');
+        }
+
+        if (direccion.value.trim() === '') {
+           direccion.classList.add('error');
+        } else {
+            direccion.classList.remove('error');
+        }
+
+        // Si algún campo requerido está vacío, evitar que el formulario se envíe
+        if (nombre.value.trim() === '' || apellido.value.trim() === '' || documento.value.trim() === '' || direccion.value.trim() === '' || telefono.value.trim() === '') {
+            // Evitar que el formulario se envíe
+            event.preventDefault();
+
+            // Mostrar un mensaje de error o tomar otra acción según sea necesario
+            alert("Por favor complete todos los campos obligatorios.");
+        }
+    });
+});
+

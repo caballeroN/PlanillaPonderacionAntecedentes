@@ -34,3 +34,8 @@ input[type=number] {
         .bold-text {
             font-weight: bold;
         }
+        /* Estilos personalizados */
+        input.error {
+            border: 1px solid red;
+            background-color: #ffe6e6; /* Color de fondo rojo claro */
+        }
