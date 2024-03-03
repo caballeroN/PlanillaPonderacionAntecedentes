@@ -29,6 +29,14 @@
             <div class="col-lg-6 order-lg-1">
                 <div class="p-5">
                     <h1 class="display-5">Formulario de datos personales</h1><br>
+                    <divn th:if="${error != null}" class="card text-write bg-danger mb-3 mensajeError">
+                        <div class="card-body">
+                            <h5 class="card-title">Error
+
+                            </h5>
+                            <p class="car-text" th:text="${error}"></p>
+                        </div>
+                    </divn>
                     <form th:object="${profesor}" action="/guardar_profe" method="POST"
                           enctype="multipart/form-data">
                         <input type="hidden" name="id" th:if="${profesor != null}" th:value="${profesor.id}"/>

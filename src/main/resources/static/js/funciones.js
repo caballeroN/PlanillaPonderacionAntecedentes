@@ -12,6 +12,7 @@ function cambioDeEstadoCheck() {
 }
 
 
+
 //Redirigir a página para crear profesor
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -50,33 +51,32 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
-
-//Bloquear busqueda con campos vacíos
-document.addEventListener("DOMContentLoaded", function () {
-	
-    const campoBusquedaPorID = document.getElementById("campoBusquedaPorID");
-    const botonBuscarPorID = document.getElementById("botonBuscarPorID");
-
+document.addEventListener("DOMContentLoaded", () => {
+    const campoBusquedaPorId = document.getElementById("campoBusquedaPorID");
+    const botonBuscarPorId = document.getElementById("botonBuscarPorID");
     const campoBusquedaPorDNI = document.getElementById("campoBusquedaPorDNI");
     const botonBuscarPorDNI = document.getElementById("botonBuscarPorDNI");
 
-    function validarCampoYBoton(campo, boton) {
+    const validarCampoYBoton = (campo, boton) => {
         const valorCampoBusqueda = campo.value.trim();
         boton.disabled = !valorCampoBusqueda;
+    };
+
+    const configurarListeners = (campo, boton) => {
+        campo.addEventListener("input", () => {
+            validarCampoYBoton(campo, boton);
+        });
+    };
+
+    if (campoBusquedaPorId && botonBuscarPorId) {
+        configurarListeners(campoBusquedaPorId, botonBuscarPorId);
+        validarCampoYBoton(campoBusquedaPorId, botonBuscarPorId);
     }
 
-    // Añadir evento input a cada campo de búsqueda
-    campoBusquedaPorID.addEventListener("input", function () {
-        validarCampoYBoton(campoBusquedaPorID, botonBuscarPorID);
-    });
-
-    campoBusquedaPorDNI.addEventListener("input", function () {
+    if (campoBusquedaPorDNI && botonBuscarPorDNI) {
+        configurarListeners(campoBusquedaPorDNI, botonBuscarPorDNI);
         validarCampoYBoton(campoBusquedaPorDNI, botonBuscarPorDNI);
-    });
-
-    // Llamar a la función inicialmente para configurar el estado inicial
-    validarCampoYBoton(campoBusquedaPorID, botonBuscarPorID);
-    validarCampoYBoton(campoBusquedaPorDNI, botonBuscarPorDNI);
+    }
 });
 
 

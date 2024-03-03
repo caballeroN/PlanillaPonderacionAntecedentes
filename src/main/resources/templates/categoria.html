@@ -19,7 +19,8 @@
 <body>
 <nav th:replace="~{/components/cancel-nav}"></nav>
 
-<header class="masthead text-center text-white" style="height: 50vh; display: flex; flex-direction: column; justify-content: center;">
+<header class="masthead text-center text-white"
+        style="height: 5vh; display: flex; flex-direction: column; justify-content: center;">
     <div class="masthead-content">
         <div class="container">
             <h1 class="mb-0 titulo-categoria" th:text="${nameCategoria}"></h1>
@@ -46,59 +47,70 @@
                     </tr>
                 </table>
             </div>
-            <br>
-            <div>
-                <h5 th:text="'Categoría ID: ' + ${categoriaId}"></h5>
-                <h5 th:text="'Categoría Nombre: ' + ${nameCategoria}"></h5>
-                <h5> Lista de Actividades: </h5>
+        </div>
+        <div>
+            <h5 th:text="'ID de la Categoría : ' + ${categoriaId}"></h5>
+            <h5 th:text="'Nombre de la Categoría: ' + ${nameCategoria}"></h5>
+            <h5> Lista de Actividades: </h5>
 
-                <form th:action="@{'/categoria_t/' + ${profesorId}}" method="post">
-                    <input type="hidden" name="profesorId" th:value="${profesorId}"/>
-                    <input type="hidden" name="strCategoriasSeleccionadas"
-                           th:value="${strCategoriasSeleccionadas}"/>
+            <form th:action="@{'/categoria_t/' + ${profesorId}}" method="post">
+                <input type="hidden" name="profesorId" th:value="${profesorId}"/>
+                <input type="hidden" name="strCategoriasSeleccionadas"
+                       th:value="${strCategoriasSeleccionadas}"/>
+                <table class="table table-hover table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Nombre Actividad</th>
+                        <th scope="col">Pts.</th>
+                        <th scope="col">Puntos Asignados</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item : ${actividadesConPuntajes}">
+                        <td scope="row" th:text="${item.actividad.nombre}"></td>
+                        <td scope="row" class="puntosMaximos" th:text="${item.actividad.puntuacion}"></td>
+                        <td>
+                            <input type="text" th:value="${item.puntajeActividad.puntaje}" name="asignados"
+                                   class="asignados-input" onchange="calcularSumaAsignados();"
+                                   placeholder="0" id="lastInput"
+                                   data-previous-value="${item.puntajeActividad.puntaje}"
+                                   onclick="borrarContenido(this)"
+                                   pattern="[0-9]+([\.][0-9]+)?"
+                                   title="Ingrese números y puntos">
+                        </td>
+                    </tr>
+                    <tr style="background-color: #ffffff;">
+                        <td colspan="1"></td>
+                        <td class="text-left">Total Parcial:</td>
+                        <td id="totalParcial" class="text-left">0</td>
+                    </tr>
+                    <tr id="filaCategoria" style="background-color: #ffff99;">
+                        <td class="align-right bold-text" style="text-align: right;">Puntuación Máxima que entrega
+                            esta categoria:
+                        </td>
+                        <td id="ptsMaximoXCategoria" th:text="${categoria.puntuacionMaxima}"></td>
+                        <td></td>
+                    </tr>
+                    <tr style="background-color: #d4edda;">
+                        <td colspan="1"></td>
+                        <td style="text-align: right;">Total:</td>
+                        <td>
+                            <input type="text" id="totalValidado" name="totalValidado" class="text-right"
+                                   placeholder="Total Validado: 0" pattern="[0-9]+([\.,][0-9]+)?" readonly>
+                        </td>
+                    </tr>
+                    <tr id="continuar" style="background-color: #ffffff;">
+                        <td colspan="2"></td>
+                        <td>
+                            <div style="text-align: left;">
+                                <button type="submit" class="ok">Continuar</button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
 
-                    <table class="table table-hover">
-                        <thead>
-                        <tr>
-                            <th scope="col">Nombre Actividad</th>
-                            <th scope="col">Pts.</th>
-                            <th scope="col">Puntos Asignados</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="item : ${actividadesConPuntajes}">
-                            <td scope="row" th:text="${item.actividad.nombre}"></td>
-                            <td scope="row" class="puntosMaximos" th:text="${item.actividad.puntuacion}"></td>
-                            <td>
-                                <input type="text" th:value="${item.puntajeActividad.puntaje}" name="asignados"
-                                       class="asignados-input" onchange="calcularSumaAsignados();"
-                                       placeholder="0" id="lastInput"
-                                       data-previous-value="${item.puntajeActividad.puntaje}" onclick="borrarContenido(this)"
-                                       pattern="[0-9]+([\.][0-9]+)?"
-                                       title="Ingrese números y puntos">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="1"></td>
-                            <td class="text-left">Total Parcial:</td>
-                            <td id="totalParcial" class="text-left">0</td>
-                        </tr>
-                        <tr>
-                            <td class="align-right bold-text" style="text-align: right;">Puntuación Maxima que entrega esta categoria:</td>
-                            <td id="ptsMaximoXCategoria" th:text="${categoria.puntuacionMaxima}"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="1"></td>
-                            <td style="text-align: right;">Total:</td>
-                            <td>
-                                <input type="text" id="totalValidado" name="totalValidado" class="text-right" placeholder="Total Validado: 0" pattern="[0-9]+([\.,][0-9]+)?">
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <button type="submit" class= "ok">Continuar</button>
-                </form>
-            </div>
+            </form>
         </div>
     </div>
 </section>
@@ -110,11 +122,12 @@
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script>
     function borrarContenido(input) {
+        if (input.value == 0)
         input.value = "";
     }
     function formatNumber(number) {
-    return parseFloat(number).toFixed(3);
-}
+        return parseFloat(number).toFixed(3);
+    }
     document.addEventListener("DOMContentLoaded", function () {
         // Llamar a la función después de que se cargue la página
         calcularSumaAsignados();
@@ -145,14 +158,18 @@
         const ptsMaximoXCategoria = document.getElementById('ptsMaximoXCategoria').textContent;
 
         if (suma > ptsMaximoXCategoria) {
-            alert("El total de puntos para esta categoria sera el maximo");
+            // Cambiar el color de fondo de la fila a naranja
+            filaCategoria.style.backgroundColor = "#ff9900";
+            // Cambiar el texto del primer TD
+            filaCategoria.getElementsByTagName("td")[0].innerText = "Por más que se supere la puntuación máxima, solo se entregarán:";
             totalValidadoInput.value = formatNumber(ptsMaximoXCategoria);
-    } else {
-        totalValidadoInput.value = formatNumber(suma);
+        } else {
+            filaCategoria.style.backgroundColor = "#ffff99";
+            filaCategoria.getElementsByTagName("td")[0].innerText = "Puntuación Máxima que entrega esta categoría";
+            totalValidadoInput.value = formatNumber(suma);
         }
     }
+
 </script>
-
-
 </body>
 </html>
