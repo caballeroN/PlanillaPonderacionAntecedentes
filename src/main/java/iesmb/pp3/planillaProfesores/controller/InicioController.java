@@ -54,8 +54,8 @@ public class InicioController {
     }
 
 
-    @GetMapping("/xdni")
-    public String buscarXdni(@RequestParam Integer id, ModelMap model) {
+    @GetMapping("/profesor")
+    public String mostrar_profesor(@RequestParam Integer id, ModelMap model) {
         Profesor profe = profesorService.getById(id);
         double total = puntajeXCategoriaValidadoService.obtenerTotalPuntosPorProfesor(profe);
         DecimalFormat formato = new DecimalFormat("#,##0.###");
@@ -68,43 +68,39 @@ public class InicioController {
     @PostMapping("/borrar/{profesorId}")
     public String borrarxdni(@PathVariable Integer profesorId, ModelMap model) {
         profesorService.delete(profesorId);
-        model.addAttribute("profesor", "profe borrado");
-        return "profesordelete";
+        return cargarInicio(model);
     }
 
-
-    @GetMapping("/new_profe/{profesorId}")
+    @GetMapping("/datos_profesor/{profesorId}")
     public String nuevo_profe(@PathVariable Integer profesorId, ModelMap model) {
         Profesor profe = profesorService.getById(profesorId);
         model.addAttribute("profesor", profe);
         return "datos_personales";
     }
 
-    @PostMapping("/buscarxdni")
-    public String buscarProfeXDNI(@RequestParam String dni, ModelMap model) {
-        Profesor profe = profesorService.getByDni(dni);
+    @PostMapping("/profesor")
+    public String profesor (@RequestParam(name = "id", required = false)  Integer id,
+                              @RequestParam(name = "dni", required = false)  String dni,
+                              ModelMap model) {
+        System.out.println("Llegue al controlador");
+        Profesor profe = new Profesor() ;
+        if (id != null){
+            profe = profesorService.getById(id);
+            System.out.println("con id " +id);
+        }
+        if (dni != null){
+            profe = profesorService.getByDni(dni);
+            System.out.println(" con dni "+dni);
+        }
         if(profe != null){
             model.addAttribute("id", profe.getId());
-            return buscarXdni(profe.getId(), model);
+            return mostrar_profesor(profe.getId(), model);
         }else {
             profe = new Profesor();
             model.addAttribute("profesor", profe);
             return "datos_personales";
         }
     }
-    @PostMapping("/buscarxid")
-    public String buscarProfeXId(@RequestParam Integer id, ModelMap model) {
-        Profesor profe = profesorService.getById(id);
-        if(profe != null){
-            model.addAttribute("id", profe.getId());
-            return buscarXdni(profe.getId(), model);
-        }else {
-            profe = new Profesor();
-            model.addAttribute("profesor", profe);
-            return "datos_personales";
-        }
-    }
-
 
     @PostMapping("/guardar_profe")
     public String guardar_profe(@RequestParam String nombre,
@@ -138,7 +134,7 @@ public class InicioController {
         newProfe.setTelefono(telefono);
         newProfe.setDocumento(documento);
         profesorService.save(newProfe);
-        return buscarXdni(newProfe.getId(), model);
+        return mostrar_profesor(newProfe.getId(), model);
     }
 
     @GetMapping("/categorias_t/{profesorId}" )
@@ -279,13 +275,11 @@ public class InicioController {
             strCategoriasSeleccionadas = respaldo;
         } else {
             model.addAttribute("id", profesor.getId());
-            return buscarXdni(profesor.getId(), model);
+            return mostrar_profesor(profesor.getId(), model);
         }
         model.addAttribute("model", model);
         model.addAttribute("porModificar", nombres);
         model.addAttribute("profesor", profesor);
-
-
         model.addAttribute("profesorId", profesorId);
         model.addAttribute("strCategoriasSeleccionadas", strCategoriasSeleccionadas);
         return "continuar";
@@ -295,7 +289,4 @@ public class InicioController {
     public String redirigirError(ModelMap model) {
         return "error";
     }
-    
-    
-    
 }

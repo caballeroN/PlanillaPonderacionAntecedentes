@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Valor específico que se quiere enviar en la solicitud POST
       var dniValue = 0;
-      var url = "/buscarxdni";
+      var url = "/profesor";
 
       // Formulario oculto dinámicamente
       var form = document.createElement("form");
@@ -84,8 +84,8 @@ document.addEventListener("DOMContentLoaded", () => {
 //Detectar al menos un checkbox seleccionado al editar categorías
 
 document.addEventListener("DOMContentLoaded", function () {
-    // Verifica si estamos en la página "/categorias_p"
-    const isCategoriasPage = window.location.pathname.includes("/categorias_t");
+    // Verifica si estamos en la página "/categoria"
+    const isCategoriasPage = window.location.pathname.includes("/categorias");
 
     if (isCategoriasPage) {
         const checkboxes = document.querySelectorAll('input[type="checkbox"]');

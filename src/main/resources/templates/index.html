@@ -32,7 +32,7 @@
 	<div class="d-flex justify-content-around busqueda-index">
 	    <div class="text-center">
 	        <h3>Buscar por ID</h3>
-	        <form action="/buscarxid" method="POST">
+	        <form action="/profesor" method="POST">
 	            <input id="campoBusquedaPorID" type="number" class="form-control" name="id" min="1"/>
 	            <br/>
 	            <button id="botonBuscarPorID" type="submit" class="btn btn-primary mt-2 ok">Buscar</button>
@@ -41,7 +41,7 @@
 	    </div>
 	    <div class="text-center">
 	        <h3>Buscar por DNI</h3>
-	        <form action="/buscarxdni" method="POST">
+	        <form action="/profesor" method="POST">
 	            <input id="campoBusquedaPorDNI" type="number" class="form-control" name="dni" min="0"/>
 	            <br/>
 	            <button id="botonBuscarPorDNI" type="submit" class="btn btn-primary mt-2 ok">Buscar</button>
@@ -74,7 +74,7 @@
                     <td scope="row" th:text="${elemento.profesor.telefono}">
                     <td scope="row" th:text="${elemento.totalAcumulado}">
                     <td>
-                        <form action="/buscarxid" method="POST">
+                        <form action="/profesor" method="POST">
                             <input type="hidden" name="id" th:value="${elemento.profesor.id}">
                             <button type="submit" class="btn btn-primary mt-2 ok">Ver Registro</button>
                         </form>
