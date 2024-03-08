@@ -82,15 +82,12 @@ public class InicioController {
     public String profesor (@RequestParam(name = "id", required = false)  Integer id,
                               @RequestParam(name = "dni", required = false)  String dni,
                               ModelMap model) {
-        System.out.println("Llegue al controlador");
         Profesor profe = new Profesor() ;
         if (id != null){
             profe = profesorService.getById(id);
-            System.out.println("con id " +id);
         }
         if (dni != null){
             profe = profesorService.getByDni(dni);
-            System.out.println(" con dni "+dni);
         }
         if(profe != null){
             model.addAttribute("id", profe.getId());
@@ -114,7 +111,6 @@ public class InicioController {
         if (id == null || id == 0){
             newProfe = new Profesor();
             if (profesorService.getByDni(documento) != null) {
-                System.out.println("existe el profesor");
                 String mensaje = "El DNI ya existe en la base de datos, puede buscar en el inicio por DNI";
                 newProfe.setNombre(nombre);
                 newProfe.setApellido(apellido);
