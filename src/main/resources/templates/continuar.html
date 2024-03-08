@@ -14,12 +14,13 @@
     <!-- Custom styles for this template -->
     <link href="/css/one-page-wonder.min.css" rel="stylesheet">
     <link href="/css/general-styles.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
 
 </head>
 <body>
 <nav th:replace="~{/components/cancel-nav}"></nav>
 
-<section style= "margin: 100px">
+<section style= "margin: 110px">
     <div class="container" id= "success-continue">
 		<h1>Cambio aplicado</h1><br>
         <div class="row align-items-center">
@@ -61,8 +62,11 @@
         </form>
     </div>
 </section>
-<footer th:replace="~{/components/footer}"></footer>
-<!-- Bootstrap core JavaScript -->
+<footer class="my-footer py-5 bg-black">
+    <div class="container">
+        <p th:replace="~{/components/copyright}"></p>
+    </div>
+</footer><!-- Bootstrap core JavaScript -->
 <script src="/vendor/jquery/jquery.min.js"></script>
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
