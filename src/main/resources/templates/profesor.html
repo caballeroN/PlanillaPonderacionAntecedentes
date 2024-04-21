@@ -18,9 +18,9 @@
     </head>
 <body>
 	
-<nav th:replace="~{/components/main-nav}"></nav>
+<nav th:replace="~{/components/volver-nav}"></nav>
 
-<header class="masthead text-center text-white" style="height: 50vh; display: flex; flex-direction: column; justify-content: center;">
+<header class="masthead text-center text-white" style="height: 5vh; display: flex; flex-direction: column; justify-content: center;">
     <div class="masthead-content">
         <div class="container">
             <h1 class="masthead-heading mb-0">Datos del Profesor</h1>
@@ -57,7 +57,7 @@
                         <form th:action="@{'/categorias_t/' + ${profesor.id}}" method="get">
                             <button class="warning" type="submit">Calificación</button>
                         </form>
-                        <form th:action="@{'/new_profe/' + ${profesor.id}}" method="get">
+                        <form th:action="@{'/datos_profesor/' + ${profesor.id}}" method="get">
                             <button class="warning" type="submit">Datos</button>
                         </form>
                     </td>

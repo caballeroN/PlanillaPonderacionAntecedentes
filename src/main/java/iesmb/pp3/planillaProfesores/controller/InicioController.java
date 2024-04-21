@@ -54,8 +54,8 @@ public class InicioController {
     }
 
 
-    @GetMapping("/xdni")
-    public String buscarXdni(@RequestParam Integer id, ModelMap model) {
+    @GetMapping("/profesor")
+    public String mostrar_profesor(@RequestParam Integer id, ModelMap model) {
         Profesor profe = profesorService.getById(id);
         double total = puntajeXCategoriaValidadoService.obtenerTotalPuntosPorProfesor(profe);
         DecimalFormat formato = new DecimalFormat("#,##0.###");
@@ -68,43 +68,36 @@ public class InicioController {
     @PostMapping("/borrar/{profesorId}")
     public String borrarxdni(@PathVariable Integer profesorId, ModelMap model) {
         profesorService.delete(profesorId);
-        model.addAttribute("profesor", "profe borrado");
-        return "profesordelete";
+        return cargarInicio(model);
     }
 
-
-    @GetMapping("/new_profe/{profesorId}")
+    @GetMapping("/datos_profesor/{profesorId}")
     public String nuevo_profe(@PathVariable Integer profesorId, ModelMap model) {
         Profesor profe = profesorService.getById(profesorId);
         model.addAttribute("profesor", profe);
         return "datos_personales";
     }
 
-    @PostMapping("/buscarxdni")
-    public String buscarProfeXDNI(@RequestParam String dni, ModelMap model) {
-        Profesor profe = profesorService.getByDni(dni);
+    @PostMapping("/profesor")
+    public String profesor (@RequestParam(name = "id", required = false)  Integer id,
+                              @RequestParam(name = "dni", required = false)  String dni,
+                              ModelMap model) {
+        Profesor profe = new Profesor() ;
+        if (id != null){
+            profe = profesorService.getById(id);
+        }
+        if (dni != null){
+            profe = profesorService.getByDni(dni);
+        }
         if(profe != null){
             model.addAttribute("id", profe.getId());
-            return buscarXdni(profe.getId(), model);
+            return mostrar_profesor(profe.getId(), model);
         }else {
             profe = new Profesor();
             model.addAttribute("profesor", profe);
             return "datos_personales";
         }
     }
-    @PostMapping("/buscarxid")
-    public String buscarProfeXId(@RequestParam Integer id, ModelMap model) {
-        Profesor profe = profesorService.getById(id);
-        if(profe != null){
-            model.addAttribute("id", profe.getId());
-            return buscarXdni(profe.getId(), model);
-        }else {
-            profe = new Profesor();
-            model.addAttribute("profesor", profe);
-            return "datos_personales";
-        }
-    }
-
 
     @PostMapping("/guardar_profe")
     public String guardar_profe(@RequestParam String nombre,
@@ -117,17 +110,27 @@ public class InicioController {
         Profesor newProfe;
         if (id == null || id == 0){
             newProfe = new Profesor();
+            if (profesorService.getByDni(documento) != null) {
+                String mensaje = "El DNI ya existe en la base de datos, puede buscar en el inicio por DNI";
+                newProfe.setNombre(nombre);
+                newProfe.setApellido(apellido);
+                newProfe.setDocumento(documento);
+                newProfe.setDireccion(direccion);
+                newProfe.setTelefono(telefono);
+                model.addAttribute("profesor", newProfe);
+                model.addAttribute("error", mensaje);
+                return "datos_personales";
+            }
         }else{
-            newProfe= profesorService.getById(id);
+            newProfe = profesorService.getById(id);
         }
-
         newProfe.setNombre(nombre);
         newProfe.setApellido(apellido);
         newProfe.setDireccion(direccion);
         newProfe.setTelefono(telefono);
         newProfe.setDocumento(documento);
         profesorService.save(newProfe);
-        return "exito";
+        return mostrar_profesor(newProfe.getId(), model);
     }
 
     @GetMapping("/categorias_t/{profesorId}" )
@@ -241,25 +244,38 @@ public class InicioController {
         List<PuntajeActividad> puntajesActividad = puntajeActividadService.obtenerPuntajesActividad(profesor, actividades);
 
         // Iterar sobre los puntajes y asignar valores
+        double sumador = 0;
         for (int i = 0; i < asignados.size(); i++) {
             PuntajeActividad puntajeActividad = puntajeActividadService.obtenerPuntajeActividad(puntajesActividad, actividades.get(i));
             puntajeActividad.setPuntaje((asignados.get(i)).isEmpty() ? 0 : Double.parseDouble(asignados.get(i).trim()));
             puntajeActividad.setProfesor(profesor);
             puntajeActividad.setActividad(actividades.get(i));
+            sumador = sumador + puntajeActividad.getPuntaje();
             puntajeActividadService.save(puntajeActividad);
         }
         String respaldo = "";
+        Categoria cateRespaldo;
+        Integer idRespaldo;
+        // esto es para obteenr los datos que recien se adjudicaron
+        // => generar la lista de categorias por iterar
+        List<String> nombres = new ArrayList<>();
         if (strCategoriasSeleccionadas.split(",").length > 1) {
             for (int i = 1; i < strCategoriasSeleccionadas.split(",").length; i++) {
+                idRespaldo = Integer.parseInt(strCategoriasSeleccionadas.split(",")[i].trim());
+                cateRespaldo = categoriaService.getById(idRespaldo);
+
+                // obtener los nombres de las categorias que faltan por modificar
+                nombres.add(cateRespaldo.getNombre());
                 respaldo += strCategoriasSeleccionadas.split(",")[i] + ", ";
             }
             strCategoriasSeleccionadas = respaldo;
         } else {
-
             model.addAttribute("id", profesor.getId());
-            return buscarXdni(profesor.getId(), model);
+            return mostrar_profesor(profesor.getId(), model);
         }
         model.addAttribute("model", model);
+        model.addAttribute("porModificar", nombres);
+        model.addAttribute("profesor", profesor);
         model.addAttribute("profesorId", profesorId);
         model.addAttribute("strCategoriasSeleccionadas", strCategoriasSeleccionadas);
         return "continuar";
@@ -269,7 +285,4 @@ public class InicioController {
     public String redirigirError(ModelMap model) {
         return "error";
     }
-    
-    
-    
 }

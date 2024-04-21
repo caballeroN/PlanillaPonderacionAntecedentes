@@ -12,6 +12,7 @@ function cambioDeEstadoCheck() {
 }
 
 
+
 //Redirigir a página para crear profesor
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -24,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Valor específico que se quiere enviar en la solicitud POST
       var dniValue = 0;
-      var url = "/buscarxdni";
+      var url = "/profesor";
 
       // Formulario oculto dinámicamente
       var form = document.createElement("form");
@@ -50,33 +51,32 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
-
-//Bloquear busqueda con campos vacíos
-document.addEventListener("DOMContentLoaded", function () {
-	
-    const campoBusquedaPorID = document.getElementById("campoBusquedaPorID");
-    const botonBuscarPorID = document.getElementById("botonBuscarPorID");
-
+document.addEventListener("DOMContentLoaded", () => {
+    const campoBusquedaPorId = document.getElementById("campoBusquedaPorID");
+    const botonBuscarPorId = document.getElementById("botonBuscarPorID");
     const campoBusquedaPorDNI = document.getElementById("campoBusquedaPorDNI");
     const botonBuscarPorDNI = document.getElementById("botonBuscarPorDNI");
 
-    function validarCampoYBoton(campo, boton) {
+    const validarCampoYBoton = (campo, boton) => {
         const valorCampoBusqueda = campo.value.trim();
         boton.disabled = !valorCampoBusqueda;
+    };
+
+    const configurarListeners = (campo, boton) => {
+        campo.addEventListener("input", () => {
+            validarCampoYBoton(campo, boton);
+        });
+    };
+
+    if (campoBusquedaPorId && botonBuscarPorId) {
+        configurarListeners(campoBusquedaPorId, botonBuscarPorId);
+        validarCampoYBoton(campoBusquedaPorId, botonBuscarPorId);
     }
 
-    // Añadir evento input a cada campo de búsqueda
-    campoBusquedaPorID.addEventListener("input", function () {
-        validarCampoYBoton(campoBusquedaPorID, botonBuscarPorID);
-    });
-
-    campoBusquedaPorDNI.addEventListener("input", function () {
+    if (campoBusquedaPorDNI && botonBuscarPorDNI) {
+        configurarListeners(campoBusquedaPorDNI, botonBuscarPorDNI);
         validarCampoYBoton(campoBusquedaPorDNI, botonBuscarPorDNI);
-    });
-
-    // Llamar a la función inicialmente para configurar el estado inicial
-    validarCampoYBoton(campoBusquedaPorID, botonBuscarPorID);
-    validarCampoYBoton(campoBusquedaPorDNI, botonBuscarPorDNI);
+    }
 });
 
 
@@ -84,8 +84,8 @@ document.addEventListener("DOMContentLoaded", function () {
 //Detectar al menos un checkbox seleccionado al editar categorías
 
 document.addEventListener("DOMContentLoaded", function () {
-    // Verifica si estamos en la página "/categorias_p"
-    const isCategoriasPage = window.location.pathname.includes("/categorias_t");
+    // Verifica si estamos en la página "/categoria"
+    const isCategoriasPage = window.location.pathname.includes("/categorias");
 
     if (isCategoriasPage) {
         const checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -120,3 +120,58 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 });
+
+// Controla que en datos_personales.html se envien datos vacios
+document.addEventListener("DOMContentLoaded", function() {
+    const form = document.getElementById("guardar"); // Reemplaza "tuFormulario" con el ID de tu formulario
+
+    form.addEventListener("submit", function(event) {
+        // Obtener los campos del formulario
+        const nombre = form.querySelector('input[name="nombre"]');
+        const apellido = form.querySelector('input[name="apellido"]');
+        const documento = form.querySelector('input[name="documento"]');
+        const direccion = form.querySelector('input[name="direccion"]');
+        const telefono = form.querySelector('input[name="telefono"]');
+
+        // Verificar si los campos requeridos están vacíos
+        if (nombre.value.trim() === '') {
+            nombre.classList.add('error');
+        } else {
+            nombre.classList.remove('error');
+        }
+
+        if (apellido.value.trim() === '') {
+            apellido.classList.add('error');
+        } else {
+            apellido.classList.remove('error');
+        }
+
+        if (documento.value.trim() === '') {
+            documento.classList.add('error');
+        } else {
+            documento.classList.remove('error');
+        }
+
+        if (telefono.value.trim() === '') {
+            telefono.classList.add('error');
+        } else {
+            telefono.classList.remove('error');
+        }
+
+        if (direccion.value.trim() === '') {
+           direccion.classList.add('error');
+        } else {
+            direccion.classList.remove('error');
+        }
+
+        // Si algún campo requerido está vacío, evitar que el formulario se envíe
+        if (nombre.value.trim() === '' || apellido.value.trim() === '' || documento.value.trim() === '' || direccion.value.trim() === '' || telefono.value.trim() === '') {
+            // Evitar que el formulario se envíe
+            event.preventDefault();
+
+            // Mostrar un mensaje de error o tomar otra acción según sea necesario
+            alert("Por favor complete todos los campos obligatorios.");
+        }
+    });
+});
+

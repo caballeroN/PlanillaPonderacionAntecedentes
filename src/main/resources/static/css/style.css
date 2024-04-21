@@ -21,11 +21,21 @@ input[type=number] {
     -moz-appearance:textfield;
 
 }
- footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background-color: black;
-            text-align: center;
-            padding: 10px 0;
+
+
+            .table-hover tbody tr:hover {
+            background-color: #b1ffff;
+        }
+
+
+        .align-right {
+            text-align: right;
+        }
+        .bold-text {
+            font-weight: bold;
+        }
+        /* Estilos personalizados */
+        input.error {
+            border: 1px solid red;
+            background-color: #ffe6e6; /* Color de fondo rojo claro */
         }
